@@ -1,0 +1,43 @@
+<resources>
+
+    <!-- Base application theme. -->
+
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!-- FIX: Referencing missing attributes which should already be defined in the support library: -->
+        <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
+        <item name="cardViewStyle">@style/CardView.Light</item>
+        <item name="navigationViewStyle">@style/Widget.Design.NavigationView</item>item>
+
+        <item name="colorPrimary">@color/colorLightGray</item>
+        <item name="colorPrimaryDark">@color/colorLightGray</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:fontFamily">@fonts/Montserrat-ExtraBold.ttf</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@fonts/Montserrat-ExtraBold.ttf</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@android:color/darker_gray</item>
+    </style>
+
+</resources>
