@@ -18,5 +18,6 @@
     <string name="Disable_Button_Name">Disable</string>
     <string name="Edit_Button_Name">Edit</string>
     <string name="fab_label">CREATE</string>
+    <string name="first_reminder_time">6:30AM</string>
 
 </resources>

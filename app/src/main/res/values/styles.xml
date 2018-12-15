@@ -38,7 +38,9 @@
         <item name="android:textAppearance"> @font/montserrat_extra_bold</item>
     </style>
 
-
+    <style name="AccentColorScrollBar">
+        <item name="android:color">@color/colorAccent</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
