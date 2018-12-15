@@ -5,12 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
-
 
 public class NewCardActivity extends AppCompatActivity {
 
-    //TextView toolbarTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +19,6 @@ public class NewCardActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Enter Your Affirmation");
-
-        //TextView textView = (TextView)toolbar.findViewById(R.id.toolbarTextView);
-        //textView.setText("String");
-
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
