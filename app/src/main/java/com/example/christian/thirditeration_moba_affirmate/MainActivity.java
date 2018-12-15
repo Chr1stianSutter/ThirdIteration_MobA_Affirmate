@@ -13,7 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,8 +41,38 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent myIntent = new Intent(getBaseContext(), NewCardActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
+        Button editButton = (Button) findViewById(R.id.editButtonPressed);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Edit", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        final Button disableButton = (Button) findViewById(R.id.disableButtonPressed);
+        disableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+            // int count = 0;
+            public void onClick(View view) {
+                if(count%2 == 1 ){
+                    disableButton.setText("Disable");
+                    Toast.makeText(MainActivity.this, "Enabled", Toast.LENGTH_SHORT).show();
+
+                }else{
+                    disableButton.setText("Enable");
+                    Toast.makeText(MainActivity.this, "Disabled", Toast.LENGTH_SHORT).show();
+                }
+
+                count++;
+                if(count == 10){count = 0;}
+
+
             }
         });
 
@@ -51,6 +84,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void fabButtonOnClick(View v){
+        Intent myIntent = new Intent(getBaseContext(), NewCardActivity.class);
+        startActivity(myIntent);
     }
 
     @Override
