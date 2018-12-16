@@ -108,13 +108,14 @@
                         android:text="First reminder at:"
                         android:textColor="@color/color70black"
                         android:textSize="18sp"
+
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.48"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-                    <EditText
-                        android:id="@+id/editText3"
+                    <TextView
+                        android:id="@+id/tvTime"
                         android:layout_width="238dp"
                         android:layout_height="41dp"
                         android:layout_marginBottom="12dp"
@@ -123,7 +124,8 @@
                         android:layout_marginTop="4dp"
                         android:ems="10"
                         android:hint="@string/first_reminder_time"
-                        android:inputType="time"
+                        android:onClick="showTimePickerDialog"
+
                         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
