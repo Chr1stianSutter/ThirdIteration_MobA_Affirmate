@@ -18,7 +18,9 @@ public class TimePickerFragment extends DialogFragment
 
     Integer hour;
     Integer minute;
-    TextView tvDisplayTime;
+
+
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -26,16 +28,23 @@ public class TimePickerFragment extends DialogFragment
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
-        
+
         return new TimePickerDialog(getActivity(), this, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+
+
+
+
     public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
+
+        TextView tvDisplayTime = (TextView) getActivity().findViewById(R.id.tvTime);
         hour = selectedHour;
         minute = selectedMinute;
 
         tvDisplayTime.setText(new StringBuilder().append(hour).append(":").append(minute));
+
     }
 
 }
