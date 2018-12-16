@@ -15,7 +15,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
+    <style name="SeventyPercentBlack">
+        <item name="android:color">@color/color70black</item>
+    </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:fontFamily">@fonts/Montserrat-ExtraBold.ttf</item>

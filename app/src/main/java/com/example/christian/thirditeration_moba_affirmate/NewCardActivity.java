@@ -41,6 +41,8 @@ public class NewCardActivity extends AppCompatActivity {
             }
         });
 
+        //TextView textView = (TextView) findViewById(R.id.tvTime);
+        //textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_editable, 0, 0, 0);
 
 
         Button cancelButton = (Button) findViewById(R.id.cancelButtonPressed);
