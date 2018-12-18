@@ -47,43 +47,45 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ScrollView
+                android:id="@+id/cardScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fillViewport="true"
                 android:scrollbarThumbVertical="@drawable/scrollbar_style">
 
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cardConstraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/editText2"
+                        android:id="@+id/affirmationDetail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         android:ems="10"
                         android:fontFamily="@font/montserrat"
+                        android:gravity="top|left"
                         android:hint="@string/create_name_hint"
                         android:inputType="textMultiLine"
                         android:textSize="36sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:gravity="top|left"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <View
-                        android:id="@+id/view"
+                        android:id="@+id/viewDivider"
                         style="@style/Divider"
                         android:layout_marginTop="24dp"
                         android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+                        app:layout_constraintTop_toBottomOf="@+id/affirmationDetail" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/remindMeLabel"
                         android:layout_width="278dp"
                         android:layout_height="25dp"
                         android:layout_marginEnd="8dp"
@@ -96,10 +98,10 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.48"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view" />
+                        app:layout_constraintTop_toBottomOf="@+id/viewDivider" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/firstReminderAtLabel"
                         android:layout_width="278dp"
                         android:layout_height="25dp"
                         android:layout_marginEnd="8dp"
@@ -116,6 +118,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
                     <LinearLayout
+                        android:id="@+id/textAndButtonGroup"
                         android:layout_width="120dp"
                         android:layout_height="35dp"
                         android:layout_marginBottom="8dp"
@@ -123,11 +126,11 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:onClick="showTimePickerDialog"
-                        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                        app:layout_constraintBottom_toTopOf="@+id/saveAndCancelButtonGroup"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.103"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4"
+                        app:layout_constraintTop_toBottomOf="@+id/firstReminderAtLabel"
                         app:layout_constraintVertical_bias="0.0">
 
                         <TextView
@@ -144,19 +147,19 @@
 
                             android:textColor="@color/color70black"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                            app:layout_constraintBottom_toTopOf="@+id/saveAndCancelButtonGroup"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                            app:layout_constraintTop_toBottomOf="@+id/firstReminderAtLabel" />
 
                         <ImageView
+                            android:id="@+id/editImage"
                             style="@style/SeventyPercentBlack"
-                            android:layout_width="wrap_content"
 
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_editable" />
                     </LinearLayout>
-
 
 
                     <RadioGroup
@@ -167,10 +170,10 @@
                         android:layout_marginStart="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView3">
+                        app:layout_constraintTop_toBottomOf="@+id/remindMeLabel">
 
                         <RadioButton
-                            android:id="@+id/radioButton"
+                            android:id="@+id/firstRadioButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -178,14 +181,14 @@
                             android:text="Once a day" />
 
                         <RadioButton
-                            android:id="@+id/radioButton2"
+                            android:id="@+id/secondRadioButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Twice a day" />
 
                         <RadioButton
-                            android:id="@+id/radioButton3"
+                            android:id="@+id/thirdRadioButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -194,7 +197,7 @@
                     </RadioGroup>
 
                     <LinearLayout
-                        android:id="@+id/linearLayout"
+                        android:id="@+id/saveAndCancelButtonGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="4dp"
