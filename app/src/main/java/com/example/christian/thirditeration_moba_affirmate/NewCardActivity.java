@@ -2,16 +2,21 @@ package com.example.christian.thirditeration_moba_affirmate;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.app.Dialog;
 import android.text.format.DateFormat;
 import android.support.v4.app.DialogFragment;
+import android.widget.Toast;
+
 import java.util.Calendar;
 
 
@@ -20,15 +25,45 @@ public class NewCardActivity extends AppCompatActivity {
     TextView tvDisplayTime;
     Integer hour;
     Integer minute;
+    SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
+    String affirmationText;
+    EditText et1;
+    RadioButton radioButtonOnceADay;
+    RadioButton radioButtonTwiceADay;
+    RadioButton radioButtonThriceADay;
+    Boolean onceADay;
+    Boolean twiceADay;
+    Boolean thriceADay;
+    String firstReminderTimeString;
+    //TextView firstReminderTimeTextView;
+    //StringBuilder
 
+
+    final String KEYAffirmationText = "keyAffirmationText";
+
+    final String KEYRadioOnce = "keyRadioOnce";
+    final String KEYRadioTwice = "keyRadioTwice";
+    final String KEYRadioThrice = "keyRadioThrice";
+
+    final String KEYFirstReminderTime = "keyFirstReminderTime";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
 
+        et1 = (EditText) findViewById(R.id.affirmationEditText);
+        radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton);
+        radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
+        radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
+        tvDisplayTime = (TextView) findViewById(R.id.tvTime);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        prefs = this.getSharedPreferences("prefsFile1", MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         getSupportActionBar().setTitle("Enter Your Affirmation");
 
@@ -58,8 +93,35 @@ public class NewCardActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                startActivity(myIntent);
+                //Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                //startActivity(myIntent);
+
+                if (et1.getText().length() > 0){
+                    //speichern
+                    affirmationText = et1.getText().toString();
+                    prefsEditor.putString(KEYAffirmationText, affirmationText);
+                    prefsEditor.commit();
+
+                }else{
+                    Toast.makeText(getApplicationContext(), "Please enter an affirmation", Toast.LENGTH_SHORT).show();
+                }
+
+                onceADay = radioButtonOnceADay.isChecked();
+                prefsEditor.putBoolean(KEYRadioOnce, onceADay);
+                prefsEditor.commit();
+
+                twiceADay = radioButtonTwiceADay.isChecked();
+                prefsEditor.putBoolean(KEYRadioTwice, twiceADay);
+                prefsEditor.commit();
+
+                thriceADay = radioButtonThriceADay.isChecked();
+                prefsEditor.putBoolean(KEYRadioThrice, thriceADay);
+                prefsEditor.commit();
+
+                firstReminderTimeString = tvDisplayTime.getText().toString();
+                prefsEditor.putString(KEYFirstReminderTime, firstReminderTimeString);
+                prefsEditor.commit();
+
             }
         });
     }

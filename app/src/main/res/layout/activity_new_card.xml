@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/editText2"
+                        android:id="@+id/affirmationEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -80,10 +80,10 @@
                         android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+                        app:layout_constraintTop_toBottomOf="@+id/affirmationEditText" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/remindMeLabel"
                         android:layout_width="278dp"
                         android:layout_height="25dp"
                         android:layout_marginEnd="8dp"
@@ -167,7 +167,7 @@
                         android:layout_marginStart="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView3">
+                        app:layout_constraintTop_toBottomOf="@+id/remindMeLabel">
 
                         <RadioButton
                             android:id="@+id/radioButton"
