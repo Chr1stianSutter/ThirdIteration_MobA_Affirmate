@@ -18,6 +18,7 @@ import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.List;
 
 
 public class NewCardActivity extends AppCompatActivity {
@@ -36,6 +37,7 @@ public class NewCardActivity extends AppCompatActivity {
     Boolean twiceADay;
     Boolean thriceADay;
     String firstReminderTimeString;
+    List affirmationsList;
     //TextView firstReminderTimeTextView;
     //StringBuilder
 
@@ -58,6 +60,7 @@ public class NewCardActivity extends AppCompatActivity {
         radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
         radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
         tvDisplayTime = (TextView) findViewById(R.id.tvTime);
+        //affirmationsList = (List)
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -93,34 +96,38 @@ public class NewCardActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                //startActivity(myIntent);
 
                 if (et1.getText().length() > 0){
                     //speichern
                     affirmationText = et1.getText().toString();
                     prefsEditor.putString(KEYAffirmationText, affirmationText);
+                    //prefsEditor.commit();
+
+                    onceADay = radioButtonOnceADay.isChecked();
+                    prefsEditor.putBoolean(KEYRadioOnce, onceADay);
+                    //prefsEditor.commit();
+
+                    twiceADay = radioButtonTwiceADay.isChecked();
+                    prefsEditor.putBoolean(KEYRadioTwice, twiceADay);
+                    //prefsEditor.commit();
+
+                    thriceADay = radioButtonThriceADay.isChecked();
+                    prefsEditor.putBoolean(KEYRadioThrice, thriceADay);
+                    //prefsEditor.commit();
+
+                    firstReminderTimeString = tvDisplayTime.getText().toString();
+                    prefsEditor.putString(KEYFirstReminderTime, firstReminderTimeString);
                     prefsEditor.commit();
+
+                    Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                    startActivity(myIntent);
 
                 }else{
                     Toast.makeText(getApplicationContext(), "Please enter an affirmation", Toast.LENGTH_SHORT).show();
                 }
 
-                onceADay = radioButtonOnceADay.isChecked();
-                prefsEditor.putBoolean(KEYRadioOnce, onceADay);
-                prefsEditor.commit();
 
-                twiceADay = radioButtonTwiceADay.isChecked();
-                prefsEditor.putBoolean(KEYRadioTwice, twiceADay);
-                prefsEditor.commit();
 
-                thriceADay = radioButtonThriceADay.isChecked();
-                prefsEditor.putBoolean(KEYRadioThrice, thriceADay);
-                prefsEditor.commit();
-
-                firstReminderTimeString = tvDisplayTime.getText().toString();
-                prefsEditor.putString(KEYFirstReminderTime, firstReminderTimeString);
-                prefsEditor.commit();
 
             }
         });
@@ -151,5 +158,17 @@ public class NewCardActivity extends AppCompatActivity {
                     tvDisplayTime.setText(new StringBuilder().append(hour).append(":").append(minute));
                 }
             };
+/*
+    private void initializeData(){
+        persons = new ArrayList<>();
+        persons.add(new Person("Emma Wilson", "23 years old", R.drawable.emma));
+        persons.add(new Person("Lavery Maiss", "25 years old", R.drawable.lavery));
+        persons.add(new Person("Lillie Watts", "35 years old", R.drawable.lillie));
+    }
 
+    private void initializeAdapter(){
+        RVAdapter adapter = new RVAdapter(persons);
+        rv.setAdapter(adapter);
+    }
+*/
 }

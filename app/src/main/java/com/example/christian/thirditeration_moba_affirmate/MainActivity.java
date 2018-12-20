@@ -4,6 +4,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,12 +20,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
 
+
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView myTextView;
     Typeface montserratFont;
     int count = 0;
+    private RecyclerView rv;
+    private List<Affirmation> affirmations;
 
 
     @Override
@@ -33,9 +42,23 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        myTextView = findViewById(R.id.TextView);
+
+
+        RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
+
+        initializeData();
+        RVAdapter adapter = new RVAdapter(affirmations);
+        rv.setAdapter(adapter);
+
+        /*
+        myTextView = findViewById(R.id.TextViewMakeBold);
         montserratFont = Typeface.createFromAsset(this.getAssets(), "fonts/Montserrat-ExtraBold.ttf");
         myTextView.setTypeface(montserratFont);
+        */
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +107,22 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void initializeData(){
+        affirmations = new ArrayList<>();
+        affirmations.add(new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM"));
+        affirmations.add(new Affirmation("Test Affirmation", false, true, false, "9:30 AM"));
+
+        //affirmations.add(new Affirmation("", "", "", "", ""));
+        //affirmations.add(new Affirmation("", "", "", "", ""));
+    }
+
+    private void initializeAdapter(){
+        RVAdapter adapter = new RVAdapter(affirmations);
+        rv.setAdapter(adapter);
+
+
     }
 
     public void fabButtonOnClick(View v){
