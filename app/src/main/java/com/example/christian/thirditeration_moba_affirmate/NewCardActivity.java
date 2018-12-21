@@ -116,13 +116,14 @@ public class NewCardActivity extends AppCompatActivity {
                     affirmationText = et1.getText().toString();
 
 
-
+                        radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton);
                         onceADay = radioButtonOnceADay.isChecked();
 
                         twiceADay = radioButtonTwiceADay.isChecked();
+                        radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
 
+                        radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
                         thriceADay = radioButtonThriceADay.isChecked();
-
 
                     firstReminderTimeString = tvDisplayTime.getText().toString();
 
@@ -136,6 +137,9 @@ public class NewCardActivity extends AppCompatActivity {
 
                 }else{
                     Toast.makeText(getApplicationContext(), "Please enter an affirmation", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), onceADay.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), twiceADay.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), thriceADay.toString(), Toast.LENGTH_SHORT).show();
                 }
 
             }

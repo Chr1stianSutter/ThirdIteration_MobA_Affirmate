@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         initializeData();
         RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
-        
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
