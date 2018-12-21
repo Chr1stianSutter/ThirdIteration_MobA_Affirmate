@@ -69,11 +69,16 @@ public class NewCardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_card);
 
         et1 = (EditText) findViewById(R.id.affirmationEditText);
-        radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton);
+        radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton1);
+        //radioButtonOnceADay.setChecked(true);
         radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
+        //radioButtonTwiceADay.setChecked(false);
         radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
+        //radioButtonThriceADay.setChecked(false);
         tvDisplayTime = (TextView) findViewById(R.id.tvTime);
-
+        onceADay = true;
+        twiceADay = false;
+        thriceADay = false;
 
         tinydb = MainActivity.getTinydb();
 
@@ -106,6 +111,8 @@ public class NewCardActivity extends AppCompatActivity {
             }
         });
 
+
+
         Button saveButton = (Button) findViewById(R.id.saveButtonPressed);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,14 +123,16 @@ public class NewCardActivity extends AppCompatActivity {
                     affirmationText = et1.getText().toString();
 
 
-                        radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton);
+                        radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton1);
                         onceADay = radioButtonOnceADay.isChecked();
 
                         twiceADay = radioButtonTwiceADay.isChecked();
                         radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
 
+
                         radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
                         thriceADay = radioButtonThriceADay.isChecked();
+
 
                     firstReminderTimeString = tvDisplayTime.getText().toString();
 
@@ -137,9 +146,7 @@ public class NewCardActivity extends AppCompatActivity {
 
                 }else{
                     Toast.makeText(getApplicationContext(), "Please enter an affirmation", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), onceADay.toString(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), twiceADay.toString(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), thriceADay.toString(), Toast.LENGTH_SHORT).show();
+
                 }
 
             }
@@ -149,6 +156,37 @@ public class NewCardActivity extends AppCompatActivity {
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId()) {
+            case R.id.radioButton1:
+                if(checked)
+
+                onceADay = true;
+                twiceADay = false;
+                thriceADay = false;
+                Toast.makeText(getApplicationContext(), "1 works", Toast.LENGTH_SHORT).show();
+                    break;
+            case R.id.radioButton2:
+                if(checked)
+
+                onceADay = false;
+                twiceADay = true;
+                thriceADay = false;
+                Toast.makeText(getApplicationContext(), "2 works", Toast.LENGTH_SHORT).show();
+                    break;
+            case R.id.radioButton3:
+                if (checked)
+
+                onceADay = false;
+                twiceADay = false;
+                thriceADay = true;
+                Toast.makeText(getApplicationContext(), "3 works", Toast.LENGTH_SHORT).show();
+                    break;
+
+        }
     }
 
     private TimePickerDialog.OnTimeSetListener timePickerListener =
