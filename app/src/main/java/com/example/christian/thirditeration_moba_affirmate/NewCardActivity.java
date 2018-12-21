@@ -1,6 +1,7 @@
 package com.example.christian.thirditeration_moba_affirmate;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.text.format.DateFormat;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -37,11 +39,21 @@ public class NewCardActivity extends AppCompatActivity {
     Boolean twiceADay;
     Boolean thriceADay;
     String firstReminderTimeString;
-    List affirmationsList;
+    //public static ArrayList affirmationsList;
+    ArrayList myAffirmationsList;
+    Integer listLengthPlusOne;
+    String affirmationsKey;
+    public static Integer listLength;
+    public static TinyDB tinydb;
+    ArrayList myAffirmations;
+    //String masterKey;
+    //public static Integer myOldKey;
+
+
     //TextView firstReminderTimeTextView;
     //StringBuilder
 
-
+    /*
     final String KEYAffirmationText = "keyAffirmationText";
 
     final String KEYRadioOnce = "keyRadioOnce";
@@ -49,6 +61,7 @@ public class NewCardActivity extends AppCompatActivity {
     final String KEYRadioThrice = "keyRadioThrice";
 
     final String KEYFirstReminderTime = "keyFirstReminderTime";
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +73,24 @@ public class NewCardActivity extends AppCompatActivity {
         radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
         radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
         tvDisplayTime = (TextView) findViewById(R.id.tvTime);
-        //affirmationsList = (List)
+
+        //Context context = this;
+        //tinydb = new TinyDB(context);
+        tinydb = MainActivity.getTinydb();
+        /*
+        if(myOldKey == null){
+            myOldKey = 0;
+        }
+        */
+        myAffirmations = MainActivity.getAffirmations();
+        //affirmationsList = new ArrayList<Affirmation>();
+        //myAffirmationsList = NewCardActivity.getAffirmationList();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        prefs = this.getSharedPreferences("prefsFile1", MODE_PRIVATE);
-        prefsEditor = prefs.edit();
+        //prefs = this.getSharedPreferences("prefsFile1", MODE_PRIVATE);
+        //prefsEditor = prefs.edit();
 
         getSupportActionBar().setTitle("Enter Your Affirmation");
 
@@ -100,27 +124,60 @@ public class NewCardActivity extends AppCompatActivity {
                 if (et1.getText().length() > 0){
                     //speichern
                     affirmationText = et1.getText().toString();
-                    prefsEditor.putString(KEYAffirmationText, affirmationText);
-                    //prefsEditor.commit();
 
-                    onceADay = radioButtonOnceADay.isChecked();
-                    prefsEditor.putBoolean(KEYRadioOnce, onceADay);
-                    //prefsEditor.commit();
 
-                    twiceADay = radioButtonTwiceADay.isChecked();
-                    prefsEditor.putBoolean(KEYRadioTwice, twiceADay);
-                    //prefsEditor.commit();
+                    //if(onceADay == null){
+                     //   onceADay = false;
+                    //}else {
+                        onceADay = radioButtonOnceADay.isChecked();
 
-                    thriceADay = radioButtonThriceADay.isChecked();
-                    prefsEditor.putBoolean(KEYRadioThrice, thriceADay);
-                    //prefsEditor.commit();
+                    //}
+                    //if(twiceADay == null){
+                     //   twiceADay = false;
+                    //}else {
+                        twiceADay = radioButtonTwiceADay.isChecked();
+                    //}
 
+                    //if (thriceADay == null){
+                     //   thriceADay = false;
+                    //}else {
+                        thriceADay = radioButtonThriceADay.isChecked();
+
+                    //}
                     firstReminderTimeString = tvDisplayTime.getText().toString();
-                    prefsEditor.putString(KEYFirstReminderTime, firstReminderTimeString);
-                    prefsEditor.commit();
+
+
+                    //if(myOldKey == null){
+                     //   myOldKey = 0;
+                   // }
+
+                    //makeAffirmationsListKey();
+                    /*
+                    makeAffirmationsMasterKey(myOldKey);
+                    tinydb.putInt("myOldKey", myOldKey);
+                    tinydb.putString("MasterKey", masterKey);
+                    */
+
+                    /*
+                    Affirmation newAffirmation = new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString);
+                    tinydb.putObject(tinydb.getString("MasterKey"), newAffirmation);
+                    */
+
+                    /*
+                    myAffirmations = MainActivity.getAffirmations();
+                    //myAffirmations.add(new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString));
+                    myAffirmations.add(tinydb.getObject(tinydb.getString("MasterKey"), Affirmation.class));
+                    tinydb.putListObject("myAffirmationsListKey", myAffirmations);
+                    */
+
 
                     Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                    //myIntent.putExtra("listLength", listLength);
+                    //myIntent.putExtra("myAffirmationsNewList", myAffirmations);
+                    setResult(RESULT_OK,myIntent );
+                    //finish();
                     startActivity(myIntent);
+
 
                 }else{
                     Toast.makeText(getApplicationContext(), "Please enter an affirmation", Toast.LENGTH_SHORT).show();
@@ -171,4 +228,49 @@ public class NewCardActivity extends AppCompatActivity {
         rv.setAdapter(adapter);
     }
 */
+/*
+    private void makeAffirmationsMasterKey(int oldKey){
+
+        if(masterKey == null){
+            masterKey = "masterKey"+0;
+        }
+
+        masterKey = "masterkey"+(oldKey+1);
+        myOldKey++;
+    }
+*/
+    private void makeAffirmationsListKey(){
+        listLength = myAffirmations.size();
+        listLengthPlusOne = (listLength +1);
+        affirmationsKey = ("affirmation"+ listLengthPlusOne);
+    }
+
+    /*
+    public static TinyDB getTinydb() {
+        return tinydb;
+    }
+    */
+
+    public static  Integer getListLength() {
+        return  listLength;
+    }
+    /*
+    public static  Integer getMyOldKey() {
+
+        if(myOldKey == null){
+            myOldKey = 0;
+        }
+        return  myOldKey;
+    }
+    */
+    /*
+    public static String getAffirmationsListKey(){
+        return affirmationsKey;
+    }
+    */
+    /*
+    public static ArrayList getAffirmationList(){
+        return affirmationsList;
+    }
+    */
 }

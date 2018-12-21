@@ -26,6 +26,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
         LinearLayout innerLinearLayout;
         Button enableDisableButton;
         Button editCardButton;
+        //TinyDB myTinydb;
 
 
         AffirmationViewHolder(View itemView){
@@ -39,6 +40,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
             innerLinearLayout = (LinearLayout) itemView.findViewById(R.id.innerLinearLayout1);
             enableDisableButton = (Button) itemView.findViewById(R.id.disableButtonPressed);
             editCardButton = (Button) itemView.findViewById(R.id.editButtonPressed);
+            //myTinydb = (TinyDB) itemView.findViewById(R.class.getClass( ));
 
         }
 
