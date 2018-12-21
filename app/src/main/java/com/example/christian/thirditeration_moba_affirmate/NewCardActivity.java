@@ -74,23 +74,16 @@ public class NewCardActivity extends AppCompatActivity {
         radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
         tvDisplayTime = (TextView) findViewById(R.id.tvTime);
 
-        //Context context = this;
-        //tinydb = new TinyDB(context);
+
         tinydb = MainActivity.getTinydb();
-        /*
-        if(myOldKey == null){
-            myOldKey = 0;
-        }
-        */
+
         myAffirmations = MainActivity.getAffirmations();
-        //affirmationsList = new ArrayList<Affirmation>();
-        //myAffirmationsList = NewCardActivity.getAffirmationList();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //prefs = this.getSharedPreferences("prefsFile1", MODE_PRIVATE);
-        //prefsEditor = prefs.edit();
+
 
         getSupportActionBar().setTitle("Enter Your Affirmation");
 
@@ -102,9 +95,6 @@ public class NewCardActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
-
-        //TextView textView = (TextView) findViewById(R.id.tvTime);
-        //textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_editable, 0, 0, 0);
 
 
         Button cancelButton = (Button) findViewById(R.id.cancelButtonPressed);
@@ -126,56 +116,21 @@ public class NewCardActivity extends AppCompatActivity {
                     affirmationText = et1.getText().toString();
 
 
-                    //if(onceADay == null){
-                     //   onceADay = false;
-                    //}else {
+
                         onceADay = radioButtonOnceADay.isChecked();
 
-                    //}
-                    //if(twiceADay == null){
-                     //   twiceADay = false;
-                    //}else {
                         twiceADay = radioButtonTwiceADay.isChecked();
-                    //}
 
-                    //if (thriceADay == null){
-                     //   thriceADay = false;
-                    //}else {
                         thriceADay = radioButtonThriceADay.isChecked();
 
-                    //}
+
                     firstReminderTimeString = tvDisplayTime.getText().toString();
 
 
-                    //if(myOldKey == null){
-                     //   myOldKey = 0;
-                   // }
-
-                    //makeAffirmationsListKey();
-                    /*
-                    makeAffirmationsMasterKey(myOldKey);
-                    tinydb.putInt("myOldKey", myOldKey);
-                    tinydb.putString("MasterKey", masterKey);
-                    */
-
-                    /*
-                    Affirmation newAffirmation = new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString);
-                    tinydb.putObject(tinydb.getString("MasterKey"), newAffirmation);
-                    */
-
-                    /*
-                    myAffirmations = MainActivity.getAffirmations();
-                    //myAffirmations.add(new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString));
-                    myAffirmations.add(tinydb.getObject(tinydb.getString("MasterKey"), Affirmation.class));
-                    tinydb.putListObject("myAffirmationsListKey", myAffirmations);
-                    */
-
-
                     Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                    //myIntent.putExtra("listLength", listLength);
-                    //myIntent.putExtra("myAffirmationsNewList", myAffirmations);
+
                     setResult(RESULT_OK,myIntent );
-                    //finish();
+
                     startActivity(myIntent);
 
 
@@ -183,23 +138,10 @@ public class NewCardActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please enter an affirmation", Toast.LENGTH_SHORT).show();
                 }
 
-
-
-
             }
         });
     }
-/*
-    public void setCurrentTimeOnView(){
-        tvDisplayTime = (TextView) findViewById(R.id.tvTime);
 
-        final Calendar c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR_OF_DAY);
-        minute = c.get(Calendar.MINUTE);
-        tvDisplayTime.setText(new StringBuilder().append(hour)
-        .append(":").append(minute));
-    }
-*/
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
@@ -215,62 +157,16 @@ public class NewCardActivity extends AppCompatActivity {
                     tvDisplayTime.setText(new StringBuilder().append(hour).append(":").append(minute));
                 }
             };
-/*
-    private void initializeData(){
-        persons = new ArrayList<>();
-        persons.add(new Person("Emma Wilson", "23 years old", R.drawable.emma));
-        persons.add(new Person("Lavery Maiss", "25 years old", R.drawable.lavery));
-        persons.add(new Person("Lillie Watts", "35 years old", R.drawable.lillie));
-    }
 
-    private void initializeAdapter(){
-        RVAdapter adapter = new RVAdapter(persons);
-        rv.setAdapter(adapter);
-    }
-*/
-/*
-    private void makeAffirmationsMasterKey(int oldKey){
-
-        if(masterKey == null){
-            masterKey = "masterKey"+0;
-        }
-
-        masterKey = "masterkey"+(oldKey+1);
-        myOldKey++;
-    }
-*/
     private void makeAffirmationsListKey(){
         listLength = myAffirmations.size();
         listLengthPlusOne = (listLength +1);
         affirmationsKey = ("affirmation"+ listLengthPlusOne);
     }
 
-    /*
-    public static TinyDB getTinydb() {
-        return tinydb;
-    }
-    */
 
     public static  Integer getListLength() {
         return  listLength;
     }
-    /*
-    public static  Integer getMyOldKey() {
 
-        if(myOldKey == null){
-            myOldKey = 0;
-        }
-        return  myOldKey;
-    }
-    */
-    /*
-    public static String getAffirmationsListKey(){
-        return affirmationsKey;
-    }
-    */
-    /*
-    public static ArrayList getAffirmationList(){
-        return affirmationsList;
-    }
-    */
 }

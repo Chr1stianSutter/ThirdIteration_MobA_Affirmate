@@ -35,13 +35,6 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView rv;
     public static ArrayList<Affirmation> affirmations;
     public static TinyDB myTinydb;
-    //Integer myListLength;
-    //ArrayList myAffirmationsList;
-    //ArrayList affirmationsList;
-    //String key;
-    //String myMasterKey;
-
-    //class myNewCardActivity;
 
 
     @Override
@@ -51,16 +44,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Context context = this;
-        //final TinyDB tinydb = new TinyDB(context);
-        //myTinydb =
+
 
         affirmations = new ArrayList<>();
 
-        //Context context = this;
-        //myTinydb = NewCardActivity.getTinydb();
-        //myListLength = NewCardActivity.getListLength();
-        //myAffirmationsList = NewCardActivity.getAffirmationList();
+
 
         Context context = this;
         myTinydb = new TinyDB(context);
@@ -74,14 +62,7 @@ public class MainActivity extends AppCompatActivity
         initializeData();
         RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
-
-
-
-        /*
-        myTextView = findViewById(R.id.TextViewMakeBold);
-        montserratFont = Typeface.createFromAsset(this.getAssets(), "fonts/Montserrat-ExtraBold.ttf");
-        myTextView.setTypeface(montserratFont);
-        */
+        
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -137,14 +118,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
         //Do your work here in ActivityA
-        //myTinydb = NewCardActivity.getTinydb();
-        //myListLength = NewCardActivity.getListLength();
-        //myAffirmationsList = NewCardActivity.getAffirmationList();
 
-        //String listLength = getIntent().getStringExtra("listLength");
-        //myListLength = Integer.valueOf(listLength);
-        //ArrayList myList = getIntent().getParcelableArrayListExtra("myAffirmationsNewList");
-        //affirmations = myList;
         initializeData();
 
 
@@ -154,41 +128,13 @@ public class MainActivity extends AppCompatActivity
 
     public void initializeData(){
 
-        //affirmationsList = new ArrayList<Affirmation>();
-        //affirmations = myList;
 
-        //affirmations.add(new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM"));
-        /*
-        for(int i = 1; i <= (NewCardActivity.getMyOldKey()) ; i++){
-
-            myMasterKey = "masterkey"+i;
-
-            affirmations.add(myTinydb.getObject(myMasterKey, Affirmation.class));
-        }
-        */
 
         Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM");
         myTinydb.putObject("testKey", newAffirmation);
         affirmations.add(myTinydb.getObject("testKey", Affirmation.class));
 
-        //makeKeys(1);
-//        myTinydb.putListObject("myAffirmationsArrayList", affirmationsList);
-        //myTinydb.putListObject("testKey", affirmationsList);
 
-
-
-        /*
-        if(myListLength != null) {
-
-            //if (newListLength < 0) {
-
-                for (int i = 0; i <= myListLength; i++) {
-                    makeKeys(i);
-                    affirmations.add(myTinydb.getObject(key, Affirmation.class));
-                }
-            //}
-        }
-        */
     }
 
     private void initializeAdapter(){
@@ -196,13 +142,7 @@ public class MainActivity extends AppCompatActivity
         rv.setAdapter(adapter);
 
     }
-/*
-    public void makeKeys(int i){
-        //for (int i = 0; i <= myListLength; i++) {
-            key = ("affirmation" + i);
-       //}
-    }
-*/
+
     public void fabButtonOnClick(View v){
         Intent myIntent = new Intent(getBaseContext(), NewCardActivity.class);
         startActivity(myIntent);
