@@ -37,6 +37,12 @@
                 android:paddingStart="8dp"
                 android:text="@string/first_affirmation"
                 android:textColor="@color/color70black"
+
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeStepGranularity="2sp"
+
                 android:textSize="64sp" />
 
             <View
