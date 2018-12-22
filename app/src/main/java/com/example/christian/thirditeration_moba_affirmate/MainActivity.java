@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity
         myTinydb.putObject("testKey", newAffirmation);
         affirmations.add(myTinydb.getObject("testKey", Affirmation.class));
 
+        //Loop through all cards in edit pref
+
 
     }
 

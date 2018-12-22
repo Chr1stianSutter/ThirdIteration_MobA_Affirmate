@@ -135,7 +135,7 @@ public class NewCardActivity extends AppCompatActivity {
 
 
                     firstReminderTimeString = tvDisplayTime.getText().toString();
-
+                    //tinydb.putObject("testKey", new);
 
                     Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
 
