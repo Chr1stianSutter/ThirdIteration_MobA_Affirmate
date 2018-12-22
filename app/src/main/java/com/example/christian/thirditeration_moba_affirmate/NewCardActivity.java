@@ -39,6 +39,7 @@ public class NewCardActivity extends AppCompatActivity {
     Boolean twiceADay;
     Boolean thriceADay;
     String firstReminderTimeString;
+    Boolean isEnabled;
     //public static ArrayList affirmationsList;
     ArrayList myAffirmationsList;
     Integer listLengthPlusOne;
@@ -123,21 +124,26 @@ public class NewCardActivity extends AppCompatActivity {
                     affirmationText = et1.getText().toString();
 
 
-                        radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton1);
-                        onceADay = radioButtonOnceADay.isChecked();
+                    radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton1);
+                    onceADay = radioButtonOnceADay.isChecked();
 
-                        twiceADay = radioButtonTwiceADay.isChecked();
-                        radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
+                    twiceADay = radioButtonTwiceADay.isChecked();
+                    radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
 
 
-                        radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
-                        thriceADay = radioButtonThriceADay.isChecked();
-
+                    radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
+                    thriceADay = radioButtonThriceADay.isChecked();
 
                     firstReminderTimeString = tvDisplayTime.getText().toString();
-                    //tinydb.putObject("testKey", new);
+
+                    isEnabled = true;
+
+
+                    Affirmation newAffirmation = new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString, isEnabled);
+                    tinydb.putObject("testKeyNewCard", newAffirmation);
 
                     Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                    myIntent.putExtra("myNewAffirmation", newAffirmation );
 
                     setResult(RESULT_OK,myIntent );
 

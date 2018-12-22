@@ -44,10 +44,18 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
         affirmations = new ArrayList<>();
 
+
+
+        Affirmation newlyAddedAffirmation = (Affirmation) getIntent().getParcelableExtra("myNewAffirmation");
+        if (newlyAddedAffirmation != null) {
+            //tvTitle.setText("Title: " + movie.title);
+            //tvYear.setText("Year: " + Integer.toString(movie.year));
+            //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
+            affirmations.add(newlyAddedAffirmation);
+        }
+        
 
 
         Context context = this;
@@ -119,6 +127,17 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         //Do your work here in ActivityA
 
+        //Loop through all cards in edit pref
+
+        Affirmation newlyAddedAffirmation = (Affirmation) getIntent().getParcelableExtra("myNewAffirmation");
+        if (newlyAddedAffirmation != null) {
+            //tvTitle.setText("Title: " + movie.title);
+            //tvYear.setText("Year: " + Integer.toString(movie.year));
+            //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
+            affirmations.add(newlyAddedAffirmation);
+        }
+
+
         initializeData();
 
 
@@ -134,7 +153,7 @@ public class MainActivity extends AppCompatActivity
         myTinydb.putObject("testKey", newAffirmation);
         affirmations.add(myTinydb.getObject("testKey", Affirmation.class));
 
-        //Loop through all cards in edit pref
+
 
 
     }
