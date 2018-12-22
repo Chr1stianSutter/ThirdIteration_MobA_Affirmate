@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
         LinearLayout innerLinearLayout;
         Button enableDisableButton;
         Button editCardButton;
+        ImageView isEnabledIndicator;
         //TinyDB myTinydb;
 
 
@@ -40,6 +42,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
             innerLinearLayout = (LinearLayout) itemView.findViewById(R.id.innerLinearLayout1);
             enableDisableButton = (Button) itemView.findViewById(R.id.disableButtonPressed);
             editCardButton = (Button) itemView.findViewById(R.id.editButtonPressed);
+            isEnabledIndicator = (ImageView) itemView.findViewById(R.id.enabledIndicatorImageView);
             //myTinydb = (TinyDB) itemView.findViewById(R.class.getClass( ));
 
         }

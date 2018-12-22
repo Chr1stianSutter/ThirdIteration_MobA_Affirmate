@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM");
+        Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM", true);
         myTinydb.putObject("testKey", newAffirmation);
         affirmations.add(myTinydb.getObject("testKey", Affirmation.class));
 

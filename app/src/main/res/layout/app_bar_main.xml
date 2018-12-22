@@ -34,9 +34,7 @@
             android:id="@+id/rv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="0dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
+            android:elevation="8dp"
             android:padding="0dp"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
@@ -51,8 +49,9 @@
             android:layout_height="442dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:elevation="4dp"
             android:visibility="invisible"
-            app:cardElevation="4dp"
+            app:cardElevation="8dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.512"
@@ -137,6 +136,7 @@
                 android:background="@color/colorAccent"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:theme="@style/AppTheme.Toolbar"
+                android:fontFamily="@font/montserrat"
                 app:titleTextAppearance="@style/AppTheme.Toolbar.Title" />
 
         </android.support.design.widget.AppBarLayout>

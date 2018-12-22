@@ -27,16 +27,18 @@ private void initializeData(){
     Boolean remindTwiceADay;
     Boolean remindThriceADay;
     String firstReminderTime;
+    Boolean isEnabled;
 
 
 
-    Affirmation(String affirmation, Boolean remindOnceADay, Boolean remindTwiceADay, Boolean remindThriceADay, String firstReminderTime){
+    Affirmation(String affirmation, Boolean remindOnceADay, Boolean remindTwiceADay, Boolean remindThriceADay, String firstReminderTime, Boolean isEnabled){
 
         this.affirmation = affirmation;
         this.remindOnceADay = remindOnceADay;
         this.remindTwiceADay = remindTwiceADay;
         this.remindThriceADay = remindThriceADay;
         this.firstReminderTime = firstReminderTime;
+        this.isEnabled = isEnabled;
     }
 }
 
