@@ -42,11 +42,13 @@ public class NewCardActivity extends AppCompatActivity {
     Boolean isEnabled;
     //public static ArrayList affirmationsList;
     ArrayList myAffirmationsList;
-    Integer listLengthPlusOne;
+    Integer listLengthMinusOne;
     String affirmationsKey;
     public static Integer listLength;
     public static TinyDB tinydb;
     ArrayList myAffirmations;
+    Integer listCounter;
+
     //String masterKey;
     //public static Integer myOldKey;
 
@@ -82,6 +84,9 @@ public class NewCardActivity extends AppCompatActivity {
         thriceADay = false;
 
         tinydb = MainActivity.getTinydb();
+
+
+        listLength = getIntent().getIntExtra("myListLengthValue", 0);
 
         myAffirmations = MainActivity.getAffirmations();
 
@@ -138,12 +143,22 @@ public class NewCardActivity extends AppCompatActivity {
 
                     isEnabled = true;
 
-
                     Affirmation newAffirmation = new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString, isEnabled);
-                    tinydb.putObject("testKeyNewCard", newAffirmation);
+                    //tinydb.putObject("testKeyNewCard", newAffirmation);
+                    listCounter = getIntent().getIntExtra("listCountInteger", 0);
+                    listCounter++;
+                    makeAffirmationsListKey();
+                    //tinydb.putObject(affirmationsKey, newAffirmation);
+                    //tinydb.putListObject(affirmationsKey, myAffirmations);
+
+                    //Toast.makeText(getApplicationContext(), affirmationsKey, Toast.LENGTH_SHORT).show();
+
 
                     Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
                     myIntent.putExtra("myNewAffirmation", newAffirmation );
+                    myIntent.putExtra("listLength", listLength);
+                    myIntent.putExtra("listCounter", listCounter);
+                    myIntent.putExtra("key", affirmationsKey);
 
                     setResult(RESULT_OK,myIntent );
 
@@ -173,7 +188,7 @@ public class NewCardActivity extends AppCompatActivity {
                 onceADay = true;
                 twiceADay = false;
                 thriceADay = false;
-                Toast.makeText(getApplicationContext(), "1 works", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), listLength.toString(), Toast.LENGTH_SHORT).show();
                     break;
             case R.id.radioButton2:
                 if(checked)
@@ -207,9 +222,10 @@ public class NewCardActivity extends AppCompatActivity {
             };
 
     private void makeAffirmationsListKey(){
+        myAffirmations = MainActivity.getAffirmations();
         listLength = myAffirmations.size();
-        listLengthPlusOne = (listLength +1);
-        affirmationsKey = ("affirmation"+ listLengthPlusOne);
+        //listLengthMinusOne = (listLength);
+        affirmationsKey = "affirmation"+listLength;
     }
 
 

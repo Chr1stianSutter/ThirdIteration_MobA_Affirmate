@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView rv;
     public static ArrayList<Affirmation> affirmations;
     public static TinyDB myTinydb;
+    String myKeyString;
+    String myAffirmationsKey;
+    public static Integer listCount;
+    //ArrayList<Affirmation> affirmationsInPreferences;
 
 
     @Override
@@ -46,16 +50,86 @@ public class MainActivity extends AppCompatActivity
 
         affirmations = new ArrayList<>();
 
+        initializeData();
 
+        listCount = getIntent().getIntExtra("listCounter", 0);
 
         Affirmation newlyAddedAffirmation = (Affirmation) getIntent().getParcelableExtra("myNewAffirmation");
         if (newlyAddedAffirmation != null) {
-            //tvTitle.setText("Title: " + movie.title);
-            //tvYear.setText("Year: " + Integer.toString(movie.year));
+            //listCount ++;
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
-            affirmations.add(newlyAddedAffirmation);
+            makeAffirmationsListKey();
+            //myTinydb.putObject(myAffirmationsKey, newlyAddedAffirmation);
+            //myTinydb.putObject(getIntent().getStringExtra("key"), newlyAddedAffirmation);
+            //affirmations.add(newlyAddedAffirmation);
+
+            //affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+
+            if (listCount < 11){
+                int size = listCount;
+                Toast.makeText(getApplicationContext(), Integer.toString(listCount), Toast.LENGTH_SHORT).show();
+
+                if(size == 1){
+                    //key = "affirmation0";
+                    //myTinydb.putObject("affirmation0", newlyAddedAffirmation);
+                    myTinydb.putObject("affirmation1", newlyAddedAffirmation);
+                    affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                }else if(size == 2){
+                    //key = "affirmation1";
+                    myTinydb.putObject("affirmation2", newlyAddedAffirmation);
+                    affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                    affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                }else if(size == 3){
+                    //key = "affirmation2";
+                    myTinydb.putObject("affirmation3", newlyAddedAffirmation);
+                    affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                    affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                    affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+                }else if(size == 3){
+                    //key = "affirmation3";
+                    myTinydb.putObject("affirmation4", newlyAddedAffirmation);
+                }else if(size == 4){
+                    //key = "affirmation4";
+                    myTinydb.putObject("affirmation5", newlyAddedAffirmation);
+                }else if(size == 5){
+                    //key = "affirmation5";
+                    myTinydb.putObject("affirmation6", newlyAddedAffirmation);
+                }else if(size == 6){
+                    //key = "affirmation6";
+                    myTinydb.putObject("affirmation7", newlyAddedAffirmation);
+                }else if(size == 7){
+                    //key = "affirmation7";
+                    myTinydb.putObject("affirmation8", newlyAddedAffirmation);
+                }else if(size == 8){
+                    //key = "affirmation8";
+                    myTinydb.putObject("affirmation9", newlyAddedAffirmation);
+                }else if(size == 9){
+                    //key = "affirmation9";
+                    myTinydb.putObject("affirmation10", newlyAddedAffirmation);
+                }else if(size == 10){
+                    //key = "affirmation10";
+
+                }
+            }
+            Toast.makeText(getApplicationContext(), Integer.toString(affirmations.size()), Toast.LENGTH_SHORT).show();
+
+
+
+
+            /*
+            //if(affirmations.size() != 0) {
+                for (int i = 0; i < affirmations.size(); i++) {
+                    MakeKeyString(i);
+                    Toast.makeText(getApplicationContext(), myKeyString, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), Integer.toString(affirmations.size()), Toast.LENGTH_SHORT).show();
+                    affirmations.add(myTinydb.getObject(myKeyString, Affirmation.class));
+                }
+            //}
+            */
         }
-        
+        Integer myListLength = getIntent().getIntExtra("listLength", 5);
+
+
 
 
         Context context = this;
@@ -67,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        initializeData();
+        //initializeData();
         RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
 
@@ -77,6 +151,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(getBaseContext(), NewCardActivity.class);
+                myIntent.putExtra("myListLengthValue", affirmations.size());
                 startActivityForResult(myIntent,0);
                 //startActivity(myIntent);
             }
@@ -120,42 +195,180 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+    }
+
+    private void makeAffirmationsListKey(){
+        //myAffirmations = MainActivity.getAffirmations();
+        //listLength = myAffirmations.size();
+        //listLengthMinusOne = (listLength);
+        myAffirmationsKey = "affirmation"+affirmations.size();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        listCount = getIntent().getIntExtra("listCounter", 0);
         //Do your work here in ActivityA
 
         //Loop through all cards in edit pref
-
+        /*
         Affirmation newlyAddedAffirmation = (Affirmation) getIntent().getParcelableExtra("myNewAffirmation");
         if (newlyAddedAffirmation != null) {
-            //tvTitle.setText("Title: " + movie.title);
-            //tvYear.setText("Year: " + Integer.toString(movie.year));
+
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
             affirmations.add(newlyAddedAffirmation);
         }
-
+        */
 
         initializeData();
+/*
+        if (affirmations.size() < 11){
+            int size = affirmations.size();
+            Toast.makeText(getApplicationContext(), Integer.toString(affirmations.size()), Toast.LENGTH_SHORT).show();
 
-
+            if(size == 0){
+                //key = "affirmation0";
+                //myTinydb.putObject("affirmation0", newlyAddedAffirmation);
+                //affirmations.add(myTinydb.getObject("affirmation0", Affirmation.class));
+            }else if(size == 1){
+                //key = "affirmation1";
+                //myTinydb.putObject("affirmation1", newlyAddedAffirmation);
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+            }else if(size == 2){
+                //key = "affirmation2";
+                //myTinydb.putObject("affirmation2", newlyAddedAffirmation);
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+            }else if(size == 3){
+                //key = "affirmation3";
+                //myTinydb.putObject("affirmation3", newlyAddedAffirmation);
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+            }else if(size == 4){
+                //key = "affirmation4";
+                //myTinydb.putObject("affirmation4", newlyAddedAffirmation);
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation4", Affirmation.class));
+            }else if(size == 5){
+                //key = "affirmation5";
+                //myTinydb.putObject("affirmation5", newlyAddedAffirmation);
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation4", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation5", Affirmation.class));
+            }else if(size == 6){
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation4", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation5", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation6", Affirmation.class));
+                //key = "affirmation6";
+                //myTinydb.putObject("affirmation6", newlyAddedAffirmation);
+            }else if(size == 7){
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation4", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation5", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation6", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation7", Affirmation.class));
+                //key = "affirmation7";
+                //myTinydb.putObject("affirmation7", newlyAddedAffirmation);
+            }else if(size == 8){
+                //key = "affirmation8";
+                //myTinydb.putObject("affirmation8", newlyAddedAffirmation);
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation4", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation5", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation6", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation7", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation8", Affirmation.class));
+            }else if(size == 9){
+                //key = "affirmation9";
+                //myTinydb.putObject("affirmation9", newlyAddedAffirmation);
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation4", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation5", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation6", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation7", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation8", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation9", Affirmation.class));
+            }else if(size == 10){
+                //key = "affirmation9";
+                //myTinydb.putObject("affirmation9", newlyAddedAffirmation);
+                affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation4", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation5", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation6", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation7", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation8", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation9", Affirmation.class));
+                affirmations.add(myTinydb.getObject("affirmation10", Affirmation.class));
+            }
+        }
+        */
     }
 
 
 
     public void initializeData(){
-
-
-
+        /*
         Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM", true);
         myTinydb.putObject("testKey", newAffirmation);
         affirmations.add(myTinydb.getObject("testKey", Affirmation.class));
 
+        if(myTinydb.getObject("affirmation1", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation1", Affirmation.class));
+        }
+        if(myTinydb.getObject("affirmation2", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation2", Affirmation.class));
+        }
+        if(myTinydb.getObject("affirmation2", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation3", Affirmation.class));
+        }
+        if(myTinydb.getObject("affirmation4", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation4", Affirmation.class));
+        }
+        if(myTinydb.getObject("affirmation5", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation5", Affirmation.class));
+        }
+        if(myTinydb.getObject("affirmation5", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation6", Affirmation.class));
+        }
+        if(myTinydb.getObject("affirmation7", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation7", Affirmation.class));
+        }
+        if(myTinydb.getObject("affirmation8", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation8", Affirmation.class));
+        }
+        if(myTinydb.getObject("affirmation9", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation9", Affirmation.class));
+        }
+        if(myTinydb.getObject("affirmation10", Affirmation.class) != null){
+            affirmations.add(myTinydb.getObject("affirmation10", Affirmation.class));
+        }
+*/
 
 
 
+
+
+    }
+
+    public void MakeKeyString(int i){
+        myKeyString = ("affirmation"+i);
     }
 
     private void initializeAdapter(){
@@ -164,9 +377,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+
     public void fabButtonOnClick(View v){
-        Intent myIntent = new Intent(getBaseContext(), NewCardActivity.class);
-        startActivity(myIntent);
+
+        if(affirmations.size() < 10) {
+            Intent myIntent = new Intent(getBaseContext(), NewCardActivity.class);
+            myIntent.putExtra("ListCountInteger", listCount);
+            startActivity(myIntent);
+        }else{
+            Toast.makeText(getApplicationContext(), "No more than 10 affirmations can be stored, please delete one before you add another", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
