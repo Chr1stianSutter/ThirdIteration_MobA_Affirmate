@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView rv;
     public static ArrayList<Affirmation> affirmations;
     public static TinyDB myTinydb;
+    ArrayList<String> myKeyList;
+    String myKey;
 
 
     @Override
@@ -44,22 +46,38 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        affirmations = new ArrayList<>();
+        affirmations = new ArrayList<Affirmation>();
+        myKeyList = new ArrayList<String>();
 
+        //Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM", true);
+        //initializeData();
 
+        //testList = affirmations;
+        //myTinydb.putListObject("savedAffirmations", testList);
 
         Affirmation newlyAddedAffirmation = (Affirmation) getIntent().getParcelableExtra("myNewAffirmation");
         if (newlyAddedAffirmation != null) {
             //tvTitle.setText("Title: " + movie.title);
             //tvYear.setText("Year: " + Integer.toString(movie.year));
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
-            affirmations.add(newlyAddedAffirmation);
+
+            //MakeKey(myTinydb.getListObject("savedAffirmations", ArrayList.class).size());
+            MakeKey(myTinydb.getListString("myKeys").size());
+            myTinydb.putObject(myKey, newlyAddedAffirmation);
+            //affirmations.add(newlyAddedAffirmation);
+            //myTinydb.putListObject("savedAffirmations", testList);
+
+            //myTinydb.putListObject("key", ArrayList<Affirmatio  affirmations);
+
         }
         
 
 
         Context context = this;
         myTinydb = new TinyDB(context);
+        myTinydb.putListString("myKeys", myKeyList);
+
+        
 
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
 
@@ -120,6 +138,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //initializeData();
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -134,11 +155,11 @@ public class MainActivity extends AppCompatActivity
             //tvTitle.setText("Title: " + movie.title);
             //tvYear.setText("Year: " + Integer.toString(movie.year));
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
-            affirmations.add(newlyAddedAffirmation);
+            //affirmations.add(newlyAddedAffirmation);
         }
 
 
-        initializeData();
+        //initializeData();
 
 
     }
@@ -148,12 +169,26 @@ public class MainActivity extends AppCompatActivity
     public void initializeData(){
 
 
-
+        /*
         Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM", true);
-        myTinydb.putObject("testKey", newAffirmation);
-        affirmations.add(myTinydb.getObject("testKey", Affirmation.class));
+        myTinydb.putObject("affirmation0", newAffirmation);
+        myKeyList.add("affirmation0");
+        myTinydb.putListString("myKeys", myKeyList);
+        */
+        //affirmations.add(myTinydb.getObject("affirmation0", Affirmation.class));
 
+        /*
+        for(int i = 0; i < myTinydb.getListObject("savedAffirmations", ArrayList.class).size(); i++){
+            MakeKey(i);
+            affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
+            */
 
+        for(int i = 0; i < myTinydb.getListString("myKeys").size(); i++){
+            myKey = myTinydb.getListString("myKeys").get(i);
+            affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
+        }
+
+        Toast.makeText(getApplicationContext(), Integer.toString(myTinydb.getListString("myKeys").size()), Toast.LENGTH_SHORT).show();
 
 
     }
@@ -161,6 +196,14 @@ public class MainActivity extends AppCompatActivity
     private void initializeAdapter(){
         RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
+
+    }
+
+    public void MakeKey(int i){
+        myKey = "affirmation"+(i);
+        myKeyList = myTinydb.getListString("myKeys");
+        myKeyList.add(myKey);
+        myTinydb.putListString("myKeys", myKeyList);
 
     }
 
