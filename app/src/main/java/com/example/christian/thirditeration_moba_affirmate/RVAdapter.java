@@ -22,6 +22,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
     public interface OnItemClickListener{
         void  onItemClick(int position);
         void onEnabledDisabledButtonClick(int position);
+        void onEditButtonClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -64,6 +65,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
                             listener.onEnabledDisabledButtonClick(position);
+                        }
+                    }
+                }
+            });
+
+            editCardButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onEditButtonClick(position);
                         }
                     }
                 }

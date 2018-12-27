@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     ArrayList<String> myKeyList;
     String myKey;
     Button enableDisableButton;
+    Button editCardButton;
 
 
     @Override
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         affirmations = new ArrayList<Affirmation>();
         myKeyList = new ArrayList<String>();
         enableDisableButton = (Button) findViewById(R.id.disableButtonPressed);
+        editCardButton = (Button) findViewById(R.id.editButtonPressed);
 
         //Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM", true);
         //initializeData();
@@ -102,6 +104,14 @@ public class MainActivity extends AppCompatActivity
                 enableDisableItem(position);
                 Toast.makeText(MainActivity.this, affirmations.get(position).isEnabled.toString(), Toast.LENGTH_SHORT).show();
 
+            }
+            @Override
+            public void onEditButtonClick(int position) {
+                /*
+                Intent myIntent = new Intent(getBaseContext(), EditCardActivity.class);
+                startActivityForResult(myIntent,0);
+                */
+                Toast.makeText(MainActivity.this, "EDIT", Toast.LENGTH_SHORT).show();
             }
         });
 
