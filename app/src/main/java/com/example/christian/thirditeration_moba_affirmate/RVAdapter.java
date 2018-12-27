@@ -1,6 +1,7 @@
 package com.example.christian.thirditeration_moba_affirmate;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,6 +42,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
         Button enableDisableButton;
         Button editCardButton;
         ImageView isEnabledIndicator;
+
+        //Boolean isEnabled;
         //TinyDB myTinydb;
 
         AffirmationViewHolder(View itemView, final OnItemClickListener listener){
@@ -55,6 +58,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
             enableDisableButton = (Button) itemView.findViewById(R.id.disableButtonPressed);
             editCardButton = (Button) itemView.findViewById(R.id.editButtonPressed);
             isEnabledIndicator = (ImageView) itemView.findViewById(R.id.enabledIndicatorImageView);
+
             //myTinydb = (TinyDB) itemView.findViewById(R.class.getClass( ));
 
 
@@ -63,8 +67,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
                 public void onClick(View view) {
                     if(listener != null){
                         int position = getAdapterPosition();
+                        //changeEnableDisableButtonText();
                         if(position != RecyclerView.NO_POSITION){
                             listener.onEnabledDisabledButtonClick(position);
+
                         }
                     }
                 }
@@ -84,8 +90,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
 
 
         }
-
-
+        /*
+        //@Override
+        public void changeEnableDisableButtonText(Boolean isEnabled) {
+            if (isEnabled == true){
+                enableDisableButton.setText("Disable");
+            }else if(isEnabled == false){
+                enableDisableButton.setText("Enable");
+            }
+        }
+        */
 
     }
 
@@ -113,6 +127,21 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
 
         affirmationViewHolder.affirmationText.setText(affirmations.get(i).affirmation);
 
+        if(affirmations.get(i).isEnabled == true){
+            affirmationViewHolder.enableDisableButton.setText("Disable");
+            //affirmationViewHolder.cv.setBackgroundColor(Color.parseColor("#32ffb600"));
+            affirmationViewHolder.cv.setCardBackgroundColor(Color.parseColor("#32ffb600"));
+            affirmationViewHolder.isEnabledIndicator.setVisibility(ImageView.VISIBLE);
+            //affirmationViewHolder.cv.setCardElevation(8);
+        }else if (affirmations.get(i).isEnabled == false){
+            affirmationViewHolder.enableDisableButton.setText("Enable");
+            affirmationViewHolder.cv.setBackgroundColor(Color.parseColor("#ffffff"));
+            affirmationViewHolder.isEnabledIndicator.setVisibility(ImageView.INVISIBLE);
+            //affirmationViewHolder.cv.setCardElevation(8);
+
+
+        }
+
         if (affirmations.get(i).remindOnceADay == true){
 
             affirmationViewHolder.remindMeTextView.setText("Remind me: Once a day");
@@ -138,5 +167,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
     public int getItemCount() {
         return affirmations.size();
     }
+
+
+
+
 
 }

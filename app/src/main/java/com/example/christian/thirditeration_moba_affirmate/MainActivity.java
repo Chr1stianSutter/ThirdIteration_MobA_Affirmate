@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     String myKey;
     Button enableDisableButton;
     Button editCardButton;
+    ImageView enabledFlag;
 
 
     @Override
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity
         myKeyList = new ArrayList<String>();
         enableDisableButton = (Button) findViewById(R.id.disableButtonPressed);
         editCardButton = (Button) findViewById(R.id.editButtonPressed);
+        enabledFlag = (ImageView) findViewById(R.id.enabledIndicatorImageView);
 
         //Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM", true);
         //initializeData();
@@ -101,7 +104,8 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onEnabledDisabledButtonClick(int position) {
-                enableDisableItem(position);
+                enableDisableItem(position, enableDisableButton);
+                adapter.notifyItemChanged(position);
                 Toast.makeText(MainActivity.this, affirmations.get(position).isEnabled.toString(), Toast.LENGTH_SHORT).show();
 
             }
@@ -153,7 +157,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+         /*
         final Button disableButton = (Button) findViewById(R.id.disableButtonPressed);
+
         disableButton.setOnClickListener(new View.OnClickListener() {
             @Override
 
@@ -174,6 +180,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -188,11 +195,23 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void enableDisableItem(int position){
+    public void enableDisableItem(int position, Button disableButton){
         if(affirmations.get(position).isEnabled == true){
+
             affirmations.get(position).isEnabled = false;
+            //adapter.notifyItemChanged(position);
+            //disableButton.findViewById(R.id.disableButtonPressed);
+            //disableButton.setText("Enable");
+            //Toast.makeText(MainActivity.this, "Disabled", Toast.LENGTH_SHORT).show();
+
         }else{
+
             affirmations.get(position).isEnabled = true;
+            ///adapter.notifyItemChanged(position);
+            //disableButton.findViewById(R.id.disableButtonPressed);
+            //disableButton.setText("Disable");
+            //Toast.makeText(MainActivity.this, "Enabled", Toast.LENGTH_SHORT).show();
+
         }
 
     }

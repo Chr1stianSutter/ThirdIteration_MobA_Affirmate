@@ -3,6 +3,7 @@ package com.example.christian.thirditeration_moba_affirmate;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Affirmation implements Parcelable{
     Boolean remindThriceADay;
     String firstReminderTime;
     Boolean isEnabled;
+
 
     @Override
     public int describeContents() {
@@ -66,6 +68,10 @@ public class Affirmation implements Parcelable{
             return new Affirmation[size];
         }
     };
+
+    public Boolean getIsEnabled(){
+        return isEnabled;
+    }
 }
 
 
