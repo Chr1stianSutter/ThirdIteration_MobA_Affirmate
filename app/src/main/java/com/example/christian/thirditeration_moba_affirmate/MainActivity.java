@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     public static TinyDB myTinydb;
     ArrayList<String> myKeyList;
     String myKey;
+    Button enableDisableButton;
 
 
     @Override
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
         affirmations = new ArrayList<Affirmation>();
         myKeyList = new ArrayList<String>();
+        enableDisableButton = (Button) findViewById(R.id.disableButtonPressed);
 
         //Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM", true);
         //initializeData();
@@ -86,8 +88,41 @@ public class MainActivity extends AppCompatActivity
         rv.setHasFixedSize(true);
 
         initializeData();
-        RVAdapter adapter = new RVAdapter(affirmations);
+        final RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new RVAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+            }
+
+            @Override
+            public void onEnabledDisabledButtonClick(int position) {
+                enableDisableItem(position);
+                Toast.makeText(MainActivity.this, affirmations.get(position).isEnabled.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        /*
+        enableDisableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //int position = Integer.parseInt(editTextRemove.getText().toString());
+                //removeItem(position);
+
+                //int position = adapter.get
+                //int position = Integer.parseInt(())
+
+
+                //enableDisableItem(position);
+
+                //Toast.makeText(MainActivity.this, affirmations.get(position).isEnabled.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        */
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -140,6 +175,15 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //initializeData();
+
+    }
+
+    public void enableDisableItem(int position){
+        if(affirmations.get(position).isEnabled == true){
+            affirmations.get(position).isEnabled = false;
+        }else{
+            affirmations.get(position).isEnabled = true;
+        }
 
     }
 

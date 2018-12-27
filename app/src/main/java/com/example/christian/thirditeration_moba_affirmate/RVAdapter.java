@@ -16,6 +16,18 @@ import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHolder>{
 
+    private OnItemClickListener mListener;
+
+
+    public interface OnItemClickListener{
+        void  onItemClick(int position);
+        void onEnabledDisabledButtonClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+
     public static class AffirmationViewHolder extends  RecyclerView.ViewHolder{
 
         LinearLayout outerLinearLayout;
@@ -30,8 +42,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
         ImageView isEnabledIndicator;
         //TinyDB myTinydb;
 
-
-        AffirmationViewHolder(View itemView){
+        AffirmationViewHolder(View itemView, final OnItemClickListener listener){
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cardView2);
             outerLinearLayout = (LinearLayout) itemView.findViewById(R.id.outerLinearLayout1);
@@ -45,7 +56,23 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
             isEnabledIndicator = (ImageView) itemView.findViewById(R.id.enabledIndicatorImageView);
             //myTinydb = (TinyDB) itemView.findViewById(R.class.getClass( ));
 
+
+            enableDisableButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onEnabledDisabledButtonClick(position);
+                        }
+                    }
+                }
+            });
+
+
         }
+
+
 
     }
 
@@ -63,7 +90,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
     @Override
     public AffirmationViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view_blueprint, viewGroup, false);
-        AffirmationViewHolder avh = new AffirmationViewHolder(v);
+        AffirmationViewHolder avh = new AffirmationViewHolder(v, mListener);
         return avh;
     }
 
