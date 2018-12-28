@@ -67,17 +67,14 @@ public class MainActivity extends AppCompatActivity
             //tvTitle.setText("Title: " + movie.title);
             //tvYear.setText("Year: " + Integer.toString(movie.year));
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
-
             //MakeKey(myTinydb.getListObject("savedAffirmations", ArrayList.class).size());
             MakeKey(myTinydb.getListString("myKeys").size());
+            newlyAddedAffirmation.affirmationKeyString = myKey;
             myTinydb.putObject(myKey, newlyAddedAffirmation);
             //affirmations.add(newlyAddedAffirmation);
             //myTinydb.putListObject("savedAffirmations", testList);
-
             //myTinydb.putListObject("key", ArrayList<Affirmatio  affirmations);
-
         }
-        
 
 
         Context context = this;
@@ -93,6 +90,7 @@ public class MainActivity extends AppCompatActivity
         rv.setHasFixedSize(true);
 
         initializeData();
+
         final RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
 
@@ -220,7 +218,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
         //Do your work here in ActivityA
-
+        //initializeData();
         //Loop through all cards in edit pref
 
         Affirmation newlyAddedAffirmation = (Affirmation) getIntent().getParcelableExtra("myNewAffirmation");

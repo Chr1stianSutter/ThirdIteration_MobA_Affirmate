@@ -40,6 +40,7 @@ public class NewCardActivity extends AppCompatActivity {
     Boolean thriceADay;
     String firstReminderTimeString;
     Boolean isEnabled;
+    String affirmationKeyString;
     //public static ArrayList affirmationsList;
     ArrayList myAffirmationsList;
     Integer listLengthPlusOne;
@@ -108,6 +109,7 @@ public class NewCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                setResult(RESULT_OK,myIntent);
                 startActivity(myIntent);
             }
         });
@@ -138,9 +140,11 @@ public class NewCardActivity extends AppCompatActivity {
 
                     isEnabled = true;
 
+                    affirmationKeyString = "dummyKey";
 
-                    Affirmation newAffirmation = new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString, isEnabled);
-                    tinydb.putObject("testKeyNewCard", newAffirmation);
+
+                    Affirmation newAffirmation = new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString, isEnabled, affirmationKeyString);
+                    //tinydb.putObject("testKeyNewCard", newAffirmation);
 
                     Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
                     myIntent.putExtra("myNewAffirmation", newAffirmation );

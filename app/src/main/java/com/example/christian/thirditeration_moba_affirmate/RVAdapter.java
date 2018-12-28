@@ -43,6 +43,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
         Button editCardButton;
         ImageView isEnabledIndicator;
 
+
+
         //Boolean isEnabled;
         //TinyDB myTinydb;
 
@@ -123,7 +125,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
 
     @Override
     public void onBindViewHolder(AffirmationViewHolder affirmationViewHolder, int i) {
-
+         TinyDB tinydb;
 
         affirmationViewHolder.affirmationText.setText(affirmations.get(i).affirmation);
 
@@ -132,11 +134,22 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
             //affirmationViewHolder.cv.setBackgroundColor(Color.parseColor("#32ffb600"));
             affirmationViewHolder.cv.setCardBackgroundColor(Color.parseColor("#32ffb600"));
             affirmationViewHolder.isEnabledIndicator.setVisibility(ImageView.VISIBLE);
+
+            tinydb = MainActivity.getTinydb();
+            Affirmation updatedAffirmation = new Affirmation(affirmations.get(i).affirmation, affirmations.get(i).remindOnceADay, affirmations.get(i).remindTwiceADay, affirmations.get(i).remindThriceADay, affirmations.get(i).firstReminderTime, affirmations.get(i).isEnabled, affirmations.get(i).affirmationKeyString);
+            tinydb.putObject(affirmations.get(i).affirmationKeyString, updatedAffirmation);
+
+            // put: key: affirmations.get(i).affirmationKeyString
             //affirmationViewHolder.cv.setCardElevation(8);
         }else if (affirmations.get(i).isEnabled == false){
             affirmationViewHolder.enableDisableButton.setText("Enable");
             affirmationViewHolder.cv.setBackgroundColor(Color.parseColor("#ffffff"));
             affirmationViewHolder.isEnabledIndicator.setVisibility(ImageView.INVISIBLE);
+
+            tinydb = MainActivity.getTinydb();
+            Affirmation updatedAffirmation = new Affirmation(affirmations.get(i).affirmation, affirmations.get(i).remindOnceADay, affirmations.get(i).remindTwiceADay, affirmations.get(i).remindThriceADay, affirmations.get(i).firstReminderTime, affirmations.get(i).isEnabled, affirmations.get(i).affirmationKeyString);
+            tinydb.putObject(affirmations.get(i).affirmationKeyString, updatedAffirmation);
+
             //affirmationViewHolder.cv.setCardElevation(8);
 
 

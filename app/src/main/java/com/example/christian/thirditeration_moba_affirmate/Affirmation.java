@@ -16,6 +16,7 @@ public class Affirmation implements Parcelable{
     Boolean remindThriceADay;
     String firstReminderTime;
     Boolean isEnabled;
+    String affirmationKeyString;
 
 
     @Override
@@ -32,9 +33,10 @@ public class Affirmation implements Parcelable{
         dest.writeByte((byte) (remindThriceADay ? 1 : 0));
         dest.writeString(firstReminderTime);
         dest.writeByte((byte) (isEnabled ? 1 : 0));
+        dest.writeString(affirmationKeyString);
     }
 
-    Affirmation(String affirmation, Boolean remindOnceADay, Boolean remindTwiceADay, Boolean remindThriceADay, String firstReminderTime, Boolean isEnabled){
+    Affirmation(String affirmation, Boolean remindOnceADay, Boolean remindTwiceADay, Boolean remindThriceADay, String firstReminderTime, Boolean isEnabled, String affirmationKeyString){
 
         this.affirmation = affirmation;
         this.remindOnceADay = remindOnceADay;
@@ -42,6 +44,7 @@ public class Affirmation implements Parcelable{
         this.remindThriceADay = remindThriceADay;
         this.firstReminderTime = firstReminderTime;
         this.isEnabled = isEnabled;
+        this.affirmationKeyString = affirmationKeyString;
     }
 
     /**
@@ -56,6 +59,7 @@ public class Affirmation implements Parcelable{
         this.remindThriceADay = in.readByte() != 0;
         this.firstReminderTime = in.readString();
         this.isEnabled = in.readByte() != 0;
+        this.affirmationKeyString = in.readString();
     }
 
     // This is to de-serialize the object
