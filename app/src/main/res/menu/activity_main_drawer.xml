@@ -4,10 +4,15 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
-    <item android:title="Enabled Affirmations">
+    tools:showIn="navigation_view"
+    android:id="@+id/navigationView">
 
-        <menu>
+    <!--
+    <item android:title="Enabled Affirmations"
+       >
+
+        <menu
+            android:id="@+id/navigationViewEnabledAffirmations">
 
             <item
                 android:id="@+id/nav_camera"
@@ -25,12 +30,17 @@
                 android:id="@+id/nav_manage"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Tools" />
+
         </menu>
 
     </item>
 
+
     <item android:title="Disabled Affirmations">
-        <menu>
+        <menu
+            android:id="@+id/navigationViewDisabledAffirmations">
+
+
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
@@ -39,7 +49,9 @@
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
+
         </menu>
     </item>
+-->
 
 </menu>

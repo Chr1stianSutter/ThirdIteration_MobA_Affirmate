@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +27,7 @@ import android.content.Intent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +43,11 @@ public class MainActivity extends AppCompatActivity
     Button enableDisableButton;
     Button editCardButton;
     ImageView enabledFlag;
+    TinyDB refreshedMyTinyDB;
+
+    //NavigationView menuNavigationViewEnabledCards;
+    //NavigationView getMenuNavigationViewDisabledCards;
+    //NavigationView navigationView;
 
 
     @Override
@@ -55,6 +62,10 @@ public class MainActivity extends AppCompatActivity
         enableDisableButton = (Button) findViewById(R.id.disableButtonPressed);
         editCardButton = (Button) findViewById(R.id.editButtonPressed);
         enabledFlag = (ImageView) findViewById(R.id.enabledIndicatorImageView);
+
+        //menuNavigationViewEnabledCards = (NavigationView) findViewById(R.id.navigationViewEnabledAffirmations);
+        //getMenuNavigationViewDisabledCards = (NavigationView) findViewById(R.id.navigationViewDisabledAffirmations);
+        //navigationView = (NavigationView) findViewById(R.id.navigationView);
 
         //Affirmation newAffirmation = new Affirmation("I am a capable UX-Designer", true, false, false, "8:30 AM", true);
         //initializeData();
@@ -90,6 +101,7 @@ public class MainActivity extends AppCompatActivity
         rv.setHasFixedSize(true);
 
         initializeData();
+        //initializeMenu();
 
         final RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
@@ -102,9 +114,14 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onEnabledDisabledButtonClick(int position) {
+                //initializeMenu();
                 enableDisableItem(position, enableDisableButton);
                 adapter.notifyItemChanged(position);
-                Toast.makeText(MainActivity.this, affirmations.get(position).isEnabled.toString(), Toast.LENGTH_SHORT).show();
+                //myTinydb = RVAdapter.getRefreshedMyTinyDB();
+                initializeMenu();
+                //refreshMenu();
+                //adapter.notifyItemChanged(position);
+                //Toast.makeText(MainActivity.this, affirmations.get(position).isEnabled.toString(), Toast.LENGTH_SHORT).show();
 
             }
             @Override
@@ -186,9 +203,29 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        initializeMenu();
+        /*
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        final Menu menuAffirmations = navigationView.getMenu();
+        final SubMenu subMenuEnabled = menuAffirmations.addSubMenu("Enabled Affirmations");
+        final SubMenu subMenuDisabled = menuAffirmations.addSubMenu("Disabled Affirmations");
 
+        if(myTinydb.getListString("myKeys").size() > 0) {
+
+            for (int i = 0; i < myTinydb.getListString("myKeys").size(); i++) {
+
+                myKey = myTinydb.getListString("myKeys").get(i);
+                //affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
+                if(myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
+                    subMenuEnabled.add(myTinydb.getObject(myKey, Affirmation.class).affirmation);
+                }else if(myTinydb.getObject(myKey, Affirmation.class).isEnabled == false){
+                    subMenuDisabled.add(myTinydb.getObject(myKey, Affirmation.class).affirmation);
+                }
+            }
+
+        }
+        */
         //initializeData();
 
     }
@@ -264,6 +301,69 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void  refreshMyTinyDB(TinyDB db){
+
+    }
+
+    public void initializeMenu(){
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.getMenu().clear();
+
+        final Menu menuAffirmations = navigationView.getMenu();
+        final SubMenu subMenuEnabled = menuAffirmations.addSubMenu("Enabled Affirmations");
+        final SubMenu subMenuDisabled = menuAffirmations.addSubMenu("Disabled Affirmations");
+
+
+        if(myTinydb.getListString("myKeys").size() > 0) {
+
+            for (int i = 0; i < myTinydb.getListString("myKeys").size(); i++) {
+
+                myKey = myTinydb.getListString("myKeys").get(i);
+                //affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
+                if(myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
+                    subMenuEnabled.add(myTinydb.getObject(myKey, Affirmation.class).affirmation);
+                }else if(myTinydb.getObject(myKey, Affirmation.class).isEnabled == false){
+                    subMenuDisabled.add(myTinydb.getObject(myKey, Affirmation.class).affirmation);
+                }
+            }
+
+        }
+
+
+    }
+
+    /*
+    public void refreshMenu(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.getMenu().clear();
+
+        final Menu menuAffirmations = navigationView.getMenu();
+        final SubMenu subMenuEnabled = menuAffirmations.addSubMenu("Enabled Affirmations");
+        final SubMenu subMenuDisabled = menuAffirmations.addSubMenu("Disabled Affirmations");
+
+
+        if(RVAdapter.getRefreshedMyTinyDB().getListString("myKeys").size() > 0) {
+
+            for (int i = 0; i < RVAdapter.getRefreshedMyTinyDB().getListString("myKeys").size(); i++) {
+
+                myKey = RVAdapter.getRefreshedMyTinyDB().getListString("myKeys").get(i);
+                //affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
+                if(RVAdapter.getRefreshedMyTinyDB().getObject(myKey, Affirmation.class).isEnabled == true) {
+                    subMenuEnabled.add(RVAdapter.getRefreshedMyTinyDB().getObject(myKey, Affirmation.class).affirmation);
+                }else if(RVAdapter.getRefreshedMyTinyDB().getObject(myKey, Affirmation.class).isEnabled == false){
+                    subMenuDisabled.add(RVAdapter.getRefreshedMyTinyDB().getObject(myKey, Affirmation.class).affirmation);
+                }
+            }
+
+        }
+    }
+    */
+
     private void initializeAdapter(){
         RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
@@ -301,12 +401,14 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
+        int id = item.getItemId();
+        /*
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
@@ -320,9 +422,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-
+        */
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

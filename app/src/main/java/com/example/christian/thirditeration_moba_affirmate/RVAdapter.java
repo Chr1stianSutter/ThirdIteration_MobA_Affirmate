@@ -18,6 +18,7 @@ import java.util.List;
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHolder>{
 
     private OnItemClickListener mListener;
+    public static TinyDB refreshedMyTinyDB;
 
 
     public interface OnItemClickListener{
@@ -125,19 +126,23 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
 
     @Override
     public void onBindViewHolder(AffirmationViewHolder affirmationViewHolder, int i) {
-         TinyDB tinydb;
+        TinyDB tinydb;
 
         affirmationViewHolder.affirmationText.setText(affirmations.get(i).affirmation);
 
         if(affirmations.get(i).isEnabled == true){
             affirmationViewHolder.enableDisableButton.setText("Disable");
-            //affirmationViewHolder.cv.setBackgroundColor(Color.parseColor("#32ffb600"));
-            affirmationViewHolder.cv.setCardBackgroundColor(Color.parseColor("#32ffb600"));
+            affirmationViewHolder.cv.setBackgroundColor(Color.parseColor("#32ffb600"));
+            //affirmationViewHolder.cv.setCardBackgroundColor(Color.parseColor("#32ffb600"));
             affirmationViewHolder.isEnabledIndicator.setVisibility(ImageView.VISIBLE);
 
             tinydb = MainActivity.getTinydb();
             Affirmation updatedAffirmation = new Affirmation(affirmations.get(i).affirmation, affirmations.get(i).remindOnceADay, affirmations.get(i).remindTwiceADay, affirmations.get(i).remindThriceADay, affirmations.get(i).firstReminderTime, affirmations.get(i).isEnabled, affirmations.get(i).affirmationKeyString);
             tinydb.putObject(affirmations.get(i).affirmationKeyString, updatedAffirmation);
+            //MainActivity.myTinydb = tinydb;
+            refreshedMyTinyDB = tinydb;
+            //refreshedMyTinyDB = MainActivity.getTinydb();
+
 
             // put: key: affirmations.get(i).affirmationKeyString
             //affirmationViewHolder.cv.setCardElevation(8);
@@ -149,6 +154,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
             tinydb = MainActivity.getTinydb();
             Affirmation updatedAffirmation = new Affirmation(affirmations.get(i).affirmation, affirmations.get(i).remindOnceADay, affirmations.get(i).remindTwiceADay, affirmations.get(i).remindThriceADay, affirmations.get(i).firstReminderTime, affirmations.get(i).isEnabled, affirmations.get(i).affirmationKeyString);
             tinydb.putObject(affirmations.get(i).affirmationKeyString, updatedAffirmation);
+            //MainActivity.myTinydb = tinydb;
+            refreshedMyTinyDB = tinydb;
+            //refreshedMyTinyDB = MainActivity.getTinydb();
+
+
 
             //affirmationViewHolder.cv.setCardElevation(8);
 
@@ -180,6 +190,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AffirmationViewHol
     public int getItemCount() {
         return affirmations.size();
     }
+
+    public static TinyDB getRefreshedMyTinyDB(){
+        return refreshedMyTinyDB;
+    }
+
 
 
 
