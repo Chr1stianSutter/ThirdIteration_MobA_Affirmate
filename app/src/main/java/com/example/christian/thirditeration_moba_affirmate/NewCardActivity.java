@@ -109,7 +109,7 @@ public class NewCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                setResult(RESULT_OK,myIntent);
+                //setResult(RESULT_OK,myIntent);
                 startActivity(myIntent);
             }
         });
@@ -147,7 +147,10 @@ public class NewCardActivity extends AppCompatActivity {
                     //tinydb.putObject("testKeyNewCard", newAffirmation);
 
                     Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                    //getIntent().removeExtra("myEditedAffirmation");
+                    myIntent.removeExtra("myEditedAffirmation");
                     myIntent.putExtra("myNewAffirmation", newAffirmation );
+                    myIntent.replaceExtras(myIntent.putExtra("myNewAffirmation", newAffirmation ));
 
                     setResult(RESULT_OK,myIntent );
 

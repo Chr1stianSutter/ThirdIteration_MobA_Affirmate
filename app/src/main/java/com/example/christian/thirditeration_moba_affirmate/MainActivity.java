@@ -73,18 +73,44 @@ public class MainActivity extends AppCompatActivity
         //testList = affirmations;
         //myTinydb.putListObject("savedAffirmations", testList);
 
-        Affirmation newlyAddedAffirmation = (Affirmation) getIntent().getParcelableExtra("myNewAffirmation");
-        if (newlyAddedAffirmation != null) {
+
+        if (getIntent().getParcelableExtra("myNewAffirmation") != null) {
+            Affirmation newlyAddedAffirmation = (Affirmation) getIntent().getParcelableExtra("myNewAffirmation");
+
+        //if (newlyAddedAffirmation != null) {
+       // if (getIntent().getParcelableExtra("myNewAffirmation") != null) {
+
             //tvTitle.setText("Title: " + movie.title);
             //tvYear.setText("Year: " + Integer.toString(movie.year));
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
             //MakeKey(myTinydb.getListObject("savedAffirmations", ArrayList.class).size());
+            //if(getIntent().getParcelableExtra("myEditedAffirmation") != null) {
             MakeKey(myTinydb.getListString("myKeys").size());
+
             newlyAddedAffirmation.affirmationKeyString = myKey;
+            //myKey = newlyAddedAffirmation.affirmationKeyString;
             myTinydb.putObject(myKey, newlyAddedAffirmation);
+            //getIntent().removeExtra("myNewAffirmation");
+            this.getIntent().removeExtra("myNewAffirmation");
+             }
             //affirmations.add(newlyAddedAffirmation);
             //myTinydb.putListObject("savedAffirmations", testList);
             //myTinydb.putListObject("key", ArrayList<Affirmatio  affirmations);
+        //}
+
+
+
+   // }
+        Affirmation newlyEditedAffirmation = (Affirmation) getIntent().getParcelableExtra("myEditedAffirmation");
+        //if (newlyEditedAffirmation != null) {
+        if (getIntent().getParcelableExtra("myEditedAffirmation") != null){
+
+            //MakeKey(myTinydb.getListString("myKeys").size());
+            myKey = newlyEditedAffirmation.affirmationKeyString;
+            myTinydb.putObject(myKey, newlyEditedAffirmation);
+            this.getIntent().removeExtra("myEditedAffirmation");
+            //getIntent().removeExtra("myEditedAffirmation");
+
         }
 
 
@@ -130,7 +156,17 @@ public class MainActivity extends AppCompatActivity
                 Intent myIntent = new Intent(getBaseContext(), EditCardActivity.class);
                 startActivityForResult(myIntent,0);
                 */
-                Toast.makeText(MainActivity.this, "EDIT", Toast.LENGTH_SHORT).show();
+
+
+                //Toast.makeText(MainActivity.this, "EDIT", Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(getBaseContext(), EditCardActivity.class);
+                myIntent.putExtra("myEditAffirmation", affirmations.get(position));
+                myIntent.removeExtra("myNewAffirmation");
+
+                startActivityForResult(myIntent,0);
+                //setResult(RESULT_OK,myIntent );
+                //startActivity(myIntent);
+
             }
         });
 
@@ -257,15 +293,19 @@ public class MainActivity extends AppCompatActivity
         //Do your work here in ActivityA
         //initializeData();
         //Loop through all cards in edit pref
-
+        /*
         Affirmation newlyAddedAffirmation = (Affirmation) getIntent().getParcelableExtra("myNewAffirmation");
-        if (newlyAddedAffirmation != null) {
+        if (getIntent().getParcelableExtra("myNewAffirmation") != null) {
+            getIntent().removeExtra("myEditedAffirmation");
             //tvTitle.setText("Title: " + movie.title);
             //tvYear.setText("Year: " + Integer.toString(movie.year));
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
             //affirmations.add(newlyAddedAffirmation);
         }
-
+        if (getIntent().getParcelableExtra("myEditedAffirmation") != null){
+            getIntent().removeExtra("myNewAffirmation");
+        }
+        */
 
         //initializeData();
 
