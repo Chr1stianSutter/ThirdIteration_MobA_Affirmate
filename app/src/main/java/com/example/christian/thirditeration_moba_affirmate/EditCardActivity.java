@@ -52,9 +52,12 @@ public class EditCardActivity extends AppCompatActivity{
             firstReminderTimeString = EditAffirmation.firstReminderTime;
             isEnabled = EditAffirmation.isEnabled;
             affirmationKeyString = EditAffirmation.affirmationKeyString;
-
-            tvDisplayTime.setText(EditAffirmation.firstReminderTime);
-
+            if(EditAffirmation.firstReminderTime != null) {
+                tvDisplayTime.setText(EditAffirmation.firstReminderTime);
+            }else{
+                tvDisplayTime.setText("FRT == NULL");
+            }
+            //tvDisplayTime.setText(firstReminderTimeString);
         }
 
         //super.onActivityResult(savedInstanceState);

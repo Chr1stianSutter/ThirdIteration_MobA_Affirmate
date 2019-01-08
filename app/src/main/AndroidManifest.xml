@@ -26,6 +26,11 @@
             android:windowSoftInputMode="adjustPan">
 
         </activity>
+
+        <activity android:name=".EditCardActivity"
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
     </application>
 
 </manifest>

@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity
                 //Toast.makeText(MainActivity.this, "EDIT", Toast.LENGTH_SHORT).show();
                 Intent myIntent = new Intent(getBaseContext(), EditCardActivity.class);
                 myIntent.putExtra("myEditAffirmation", affirmations.get(position));
-                myIntent.removeExtra("myNewAffirmation");
+                //myIntent.removeExtra("myNewAffirmation");
 
                 startActivityForResult(myIntent,0);
                 //setResult(RESULT_OK,myIntent );
