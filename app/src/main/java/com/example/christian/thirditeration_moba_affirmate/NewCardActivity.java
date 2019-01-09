@@ -108,9 +108,10 @@ public class NewCardActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                //setResult(RESULT_OK,myIntent);
-                startActivity(myIntent);
+                finish();
+//                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+//                //setResult(RESULT_OK,myIntent);
+//                startActivity(myIntent);
             }
         });
 

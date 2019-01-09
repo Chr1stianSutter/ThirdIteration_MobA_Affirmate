@@ -52,8 +52,9 @@ public class EditCardActivity extends AppCompatActivity{
             firstReminderTimeString = EditAffirmation.firstReminderTime;
             isEnabled = EditAffirmation.isEnabled;
             affirmationKeyString = EditAffirmation.affirmationKeyString;
+
             if(EditAffirmation.firstReminderTime != null) {
-                tvDisplayTime.setText(EditAffirmation.firstReminderTime);
+                tvDisplayTime.setText(firstReminderTimeString);
             }else{
                 tvDisplayTime.setText("FRT == NULL");
             }
@@ -91,6 +92,16 @@ public class EditCardActivity extends AppCompatActivity{
                 Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
                 setResult(RESULT_OK,myIntent);
                 startActivity(myIntent);
+            }
+        });
+        Button cancelButton = (Button) findViewById(R.id.cancelButtonPressed);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+//                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+//                //setResult(RESULT_OK,myIntent);
+//                startActivity(myIntent);
             }
         });
 

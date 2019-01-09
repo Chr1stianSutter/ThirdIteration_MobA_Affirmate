@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
             //MakeKey(myTinydb.getListObject("savedAffirmations", ArrayList.class).size());
             //if(getIntent().getParcelableExtra("myEditedAffirmation") != null) {
+
             MakeKey(myTinydb.getListString("myKeys").size());
 
             newlyAddedAffirmation.affirmationKeyString = myKey;
@@ -143,8 +144,9 @@ public class MainActivity extends AppCompatActivity
                 //initializeMenu();
                 enableDisableItem(position, enableDisableButton);
                 adapter.notifyItemChanged(position);
+                adapter.notifyDataSetChanged();
                 //myTinydb = RVAdapter.getRefreshedMyTinyDB();
-                initializeMenu();
+               initializeMenu();
                 //refreshMenu();
                 //adapter.notifyItemChanged(position);
                 //Toast.makeText(MainActivity.this, affirmations.get(position).isEnabled.toString(), Toast.LENGTH_SHORT).show();
@@ -161,9 +163,10 @@ public class MainActivity extends AppCompatActivity
                 //Toast.makeText(MainActivity.this, "EDIT", Toast.LENGTH_SHORT).show();
                 Intent myIntent = new Intent(getBaseContext(), EditCardActivity.class);
                 myIntent.putExtra("myEditAffirmation", affirmations.get(position));
+                myIntent.putExtra("myEditAffirmation", myTinydb.getObject(affirmations.get(position).affirmationKeyString,Affirmation.class));
                 //myIntent.removeExtra("myNewAffirmation");
 
-                startActivityForResult(myIntent,0);
+                startActivity(myIntent);
                 //setResult(RESULT_OK,myIntent );
                 //startActivity(myIntent);
 
@@ -267,23 +270,33 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void enableDisableItem(int position, Button disableButton){
+        //affirmations.get(position).isEnabled = !affirmations.get(position).isEnabled;
+        /*
+        String tempKey = affirmations.get(position).affirmationKeyString;
+        affirmations.remove(position);
+        affirmations.add(myTinydb.getObject(tempKey, Affirmation.class));
+        */
+        myTinydb.putObject(affirmations.get(position).affirmationKeyString, affirmations.get(position));
+
         if(affirmations.get(position).isEnabled == true){
-
+//
             affirmations.get(position).isEnabled = false;
-            //adapter.notifyItemChanged(position);
-            //disableButton.findViewById(R.id.disableButtonPressed);
-            //disableButton.setText("Enable");
-            //Toast.makeText(MainActivity.this, "Disabled", Toast.LENGTH_SHORT).show();
-
+            myTinydb.putObject(affirmations.get(position).affirmationKeyString, affirmations.get(position));
+//            //adapter.notifyItemChanged(position);
+//            //disableButton.findViewById(R.id.disableButtonPressed);
+//            //disableButton.setText("Enable");
+//            //Toast.makeText(MainActivity.this, "Disabled", Toast.LENGTH_SHORT).show();
+//
         }else{
-
+//
             affirmations.get(position).isEnabled = true;
-            ///adapter.notifyItemChanged(position);
-            //disableButton.findViewById(R.id.disableButtonPressed);
-            //disableButton.setText("Disable");
-            //Toast.makeText(MainActivity.this, "Enabled", Toast.LENGTH_SHORT).show();
-
-        }
+            myTinydb.putObject(affirmations.get(position).affirmationKeyString, affirmations.get(position));
+//            ///adapter.notifyItemChanged(position);
+//            //disableButton.findViewById(R.id.disableButtonPressed);
+//            //disableButton.setText("Disable");
+//            //Toast.makeText(MainActivity.this, "Enabled", Toast.LENGTH_SHORT).show();
+//
+       }
 
     }
 
@@ -356,7 +369,7 @@ public class MainActivity extends AppCompatActivity
         final SubMenu subMenuEnabled = menuAffirmations.addSubMenu("Enabled Affirmations");
         final SubMenu subMenuDisabled = menuAffirmations.addSubMenu("Disabled Affirmations");
 
-
+        //affirmaions array list abfragen, oder affirmations früher speichern
         if(myTinydb.getListString("myKeys").size() > 0) {
 
             for (int i = 0; i < myTinydb.getListString("myKeys").size(); i++) {
