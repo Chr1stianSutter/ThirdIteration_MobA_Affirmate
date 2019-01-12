@@ -89,11 +89,13 @@ public class EditCardActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // back button pressed
-                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                setResult(RESULT_OK,myIntent);
-                startActivity(myIntent);
+                //Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                //setResult(RESULT_OK,myIntent);
+                //startActivity(myIntent);
+                finish();
             }
         });
+
         Button cancelButton = (Button) findViewById(R.id.cancelButtonPressed);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
