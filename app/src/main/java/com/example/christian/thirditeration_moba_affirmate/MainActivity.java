@@ -126,6 +126,10 @@ public class MainActivity extends AppCompatActivity
 
         Context context = this;
         myTinydb = new TinyDB(context);
+
+
+        //COMMENT AFTER FIXING PREFS
+        //myTinydb.clear();
         //myTinydb.putListString("myKeys", myKeyList);
 
 

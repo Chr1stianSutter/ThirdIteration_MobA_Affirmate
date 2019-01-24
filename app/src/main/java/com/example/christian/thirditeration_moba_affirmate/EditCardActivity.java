@@ -1,12 +1,15 @@
 package com.example.christian.thirditeration_moba_affirmate;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +43,7 @@ public class EditCardActivity extends AppCompatActivity{
     String tvDisplayTimeString;
     public static TinyDB tinydb;
     ArrayList myAffirmations;
+    ArrayList myKeyListToEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -49,6 +53,8 @@ public class EditCardActivity extends AppCompatActivity{
 
         final Affirmation EditAffirmation = (Affirmation) getIntent().getParcelableExtra("myEditAffirmation");
         //
+        myKeyListToEdit = new ArrayList<String>();
+
          tvDisplayTimeString = EditAffirmation.firstReminderTime;
 
          substr = ":";
@@ -123,16 +129,18 @@ public class EditCardActivity extends AppCompatActivity{
 
 
 
-        Button cancelButton = (Button) findViewById(R.id.cancelButtonPressed);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        Button deleteButton = (Button) findViewById(R.id.deleteButtonPressed);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                //finish();
+                showDeleteAffirmationDialog(EditAffirmation);
 //                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
 //                //setResult(RESULT_OK,myIntent);
 //                startActivity(myIntent);
             }
         });
+
 
         Button saveButton = (Button) findViewById(R.id.saveButtonPressed);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -182,6 +190,40 @@ public class EditCardActivity extends AppCompatActivity{
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    public void showDeleteAffirmationDialog(final Affirmation toDelete){
+        //DialogFragment newFragment = new DeleteCardAlertFragment();
+        //newFragment.show(getSupportFragmentManager(), "deleteAlert");
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view=inflater.inflate(R.layout.activity_edit_card, null);
+        //alert.setCustomTitle(view);
+                alert.setPositiveButton(R.string.yes_delete_card, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                        
+                        myKeyListToEdit= tinydb.getListString("myKeys");
+                        myKeyListToEdit.remove(toDelete.affirmationKeyString);
+                        tinydb.putListString("myKeys", myKeyListToEdit);
+
+                        tinydb.remove(toDelete.affirmationKeyString);
+
+                        startActivity(myIntent);
+                    }
+                });
+                alert.setNegativeButton(R.string.no_keep_card, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+        alert.setMessage("Do you want to DELETE this Affirmation?");
+        alert.show();
+
+
     }
 
     public void onRadioButtonClicked(View view) {

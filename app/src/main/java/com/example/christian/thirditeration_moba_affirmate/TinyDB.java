@@ -519,6 +519,7 @@ public class TinyDB {
      */
     public void remove(String key) {
         preferences.edit().remove(key).apply();
+        preferences.edit().commit();
     }
 
     /**
