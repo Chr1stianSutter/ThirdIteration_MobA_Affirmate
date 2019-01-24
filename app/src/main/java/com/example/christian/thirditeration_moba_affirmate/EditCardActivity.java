@@ -31,6 +31,10 @@ public class EditCardActivity extends AppCompatActivity{
     String firstReminderTimeString;
     Boolean isEnabled;
     String affirmationKeyString;
+    String substr;
+    String before;
+    String after;
+    String tvDisplayTimeString;
     public static TinyDB tinydb;
     ArrayList myAffirmations;
 
@@ -38,7 +42,22 @@ public class EditCardActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+
+
         final Affirmation EditAffirmation = (Affirmation) getIntent().getParcelableExtra("myEditAffirmation");
+        //
+         tvDisplayTimeString = EditAffirmation.firstReminderTime;
+
+         substr = ":";
+         before = tvDisplayTimeString.substring(0, tvDisplayTimeString.indexOf(substr));
+         after = tvDisplayTimeString.substring(tvDisplayTimeString.indexOf(substr) + substr.length());
+
+         hour = Integer.valueOf(before);
+         minute = Integer.valueOf(after);
+        //
+        tvDisplayTime = (TextView) findViewById(R.id.tvTime);
+        tvDisplayTime.setText(EditAffirmation.firstReminderTime);
+
         if (EditAffirmation != null) {
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
             //affirmations.add(newlyAddedAffirmation);
@@ -59,9 +78,8 @@ public class EditCardActivity extends AppCompatActivity{
                 tvDisplayTime.setText("FRT == NULL");
             }
             //tvDisplayTime.setText(firstReminderTimeString);
-        }
 
-        //super.onActivityResult(savedInstanceState);
+        }
         setContentView(R.layout.activity_edit_card);
 
         et1 = (EditText) findViewById(R.id.affirmationEditText);
@@ -71,8 +89,8 @@ public class EditCardActivity extends AppCompatActivity{
 
         radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
 
-        tvDisplayTime = (TextView) findViewById(R.id.tvTime);
-        tvDisplayTime.setText(EditAffirmation.firstReminderTime);
+        //super.onActivityResult(savedInstanceState);
+
 
         //onceADay = true;
         //twiceADay = false;

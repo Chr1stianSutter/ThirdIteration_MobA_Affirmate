@@ -22,8 +22,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity
     Button enableDisableButton;
     Button editCardButton;
     ImageView enabledFlag;
+    SharedPreferences myPrefs;
+
     TinyDB refreshedMyTinyDB;
 
     //NavigationView menuNavigationViewEnabledCards;
@@ -56,6 +60,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        myPrefs = getSharedPreferences("actualPrefs", Context.MODE_PRIVATE);
+
 
         affirmations = new ArrayList<Affirmation>();
         myKeyList = new ArrayList<String>();
@@ -91,6 +98,8 @@ public class MainActivity extends AppCompatActivity
             newlyAddedAffirmation.affirmationKeyString = myKey;
             //myKey = newlyAddedAffirmation.affirmationKeyString;
             myTinydb.putObject(myKey, newlyAddedAffirmation);
+
+            //editor.putObject("nameKey", "Bruce the Hoon");
             //getIntent().removeExtra("myNewAffirmation");
             this.getIntent().removeExtra("myNewAffirmation");
              }
@@ -291,6 +300,7 @@ public class MainActivity extends AppCompatActivity
 //
             affirmations.get(position).isEnabled = true;
             myTinydb.putObject(affirmations.get(position).affirmationKeyString, affirmations.get(position));
+
 //            ///adapter.notifyItemChanged(position);
 //            //disableButton.findViewById(R.id.disableButtonPressed);
 //            //disableButton.setText("Disable");
@@ -343,11 +353,27 @@ public class MainActivity extends AppCompatActivity
             MakeKey(i);
             affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
             */
+        if(affirmations.size() != 0) {
+            Gson gson = new Gson();
+            String json = myPrefs.getString("AllAffirmations", "");
+            ArrayList<Affirmation> obj = gson.fromJson(json, Affirmation.class);
+            affirmations = obj;
+        }
+
 
         for(int i = 0; i < myTinydb.getListString("myKeys").size(); i++){
             myKey = myTinydb.getListString("myKeys").get(i);
             affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
+
+                SharedPreferences.Editor editor = myPrefs.edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(affirmations);
+                editor.putString("AllAffirmations", json);
+                editor.commit();
+
+
         }
+
 
         Toast.makeText(getApplicationContext(), Integer.toString(myTinydb.getListString("myKeys").size()), Toast.LENGTH_SHORT).show();
 
