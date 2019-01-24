@@ -204,7 +204,7 @@ public class EditCardActivity extends AppCompatActivity{
                 alert.setPositiveButton(R.string.yes_delete_card, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                        
+
                         myKeyListToEdit= tinydb.getListString("myKeys");
                         myKeyListToEdit.remove(toDelete.affirmationKeyString);
                         tinydb.putListString("myKeys", myKeyListToEdit);
