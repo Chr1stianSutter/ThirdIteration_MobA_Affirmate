@@ -457,6 +457,7 @@ public class TinyDB {
         checkForNullKey(key);
         String[] myStringList = stringList.toArray(new String[stringList.size()]);
         preferences.edit().putString(key, TextUtils.join("‚‗‚", myStringList)).apply();
+        preferences.edit().putString(key, TextUtils.join("‚‗‚", myStringList)).commit();
         preferences.edit().commit();
     }
 

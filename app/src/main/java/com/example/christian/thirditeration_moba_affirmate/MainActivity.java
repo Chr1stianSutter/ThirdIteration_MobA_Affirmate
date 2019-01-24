@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
 
         Context context = this;
         myTinydb = new TinyDB(context);
-        myTinydb.putListString("myKeys", myKeyList);
+        //myTinydb.putListString("myKeys", myKeyList);
 
 
 
@@ -383,10 +383,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void  refreshMyTinyDB(TinyDB db){
-
-    }
-
     public void initializeMenu(){
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -417,35 +413,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    /*
-    public void refreshMenu(){
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.getMenu().clear();
-
-        final Menu menuAffirmations = navigationView.getMenu();
-        final SubMenu subMenuEnabled = menuAffirmations.addSubMenu("Enabled Affirmations");
-        final SubMenu subMenuDisabled = menuAffirmations.addSubMenu("Disabled Affirmations");
-
-
-        if(RVAdapter.getRefreshedMyTinyDB().getListString("myKeys").size() > 0) {
-
-            for (int i = 0; i < RVAdapter.getRefreshedMyTinyDB().getListString("myKeys").size(); i++) {
-
-                myKey = RVAdapter.getRefreshedMyTinyDB().getListString("myKeys").get(i);
-                //affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
-                if(RVAdapter.getRefreshedMyTinyDB().getObject(myKey, Affirmation.class).isEnabled == true) {
-                    subMenuEnabled.add(RVAdapter.getRefreshedMyTinyDB().getObject(myKey, Affirmation.class).affirmation);
-                }else if(RVAdapter.getRefreshedMyTinyDB().getObject(myKey, Affirmation.class).isEnabled == false){
-                    subMenuDisabled.add(RVAdapter.getRefreshedMyTinyDB().getObject(myKey, Affirmation.class).affirmation);
-                }
-            }
-
-        }
-    }
-    */
-
     private void initializeAdapter(){
         RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
@@ -457,6 +424,7 @@ public class MainActivity extends AppCompatActivity
         myKeyList = myTinydb.getListString("myKeys");
         myKeyList.add(myKey);
         myTinydb.putListString("myKeys", myKeyList);
+
 
     }
 

@@ -1,8 +1,10 @@
 package com.example.christian.thirditeration_moba_affirmate;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -53,10 +56,11 @@ public class EditCardActivity extends AppCompatActivity{
          after = tvDisplayTimeString.substring(tvDisplayTimeString.indexOf(substr) + substr.length());
 
          hour = Integer.valueOf(before);
-         minute = Integer.valueOf(after);
+         //minute = Integer.valueOf(after);
+        minute = Integer.parseInt(after.replaceAll("\\D", ""));
         //
-        tvDisplayTime = (TextView) findViewById(R.id.tvTime);
-        tvDisplayTime.setText(EditAffirmation.firstReminderTime);
+
+        //
 
         if (EditAffirmation != null) {
             //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
@@ -71,24 +75,27 @@ public class EditCardActivity extends AppCompatActivity{
             firstReminderTimeString = EditAffirmation.firstReminderTime;
             isEnabled = EditAffirmation.isEnabled;
             affirmationKeyString = EditAffirmation.affirmationKeyString;
-
+            /*
             if(EditAffirmation.firstReminderTime != null) {
-                tvDisplayTime.setText(firstReminderTimeString);
+                //tvDisplayTime.setText(firstReminderTimeString);
+                tvDisplayTime.setText(tvDisplayTimeString);
             }else{
                 tvDisplayTime.setText("FRT == NULL");
             }
             //tvDisplayTime.setText(firstReminderTimeString);
-
+            */
         }
         setContentView(R.layout.activity_edit_card);
 
         et1 = (EditText) findViewById(R.id.affirmationEditText);
+        et1.setText(affirmationText);
         radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton1);
 
         radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
 
         radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
-
+        tvDisplayTime = (TextView) findViewById(R.id.tvTime);
+        tvDisplayTime.setText(EditAffirmation.firstReminderTime);
         //super.onActivityResult(savedInstanceState);
 
 
@@ -113,6 +120,8 @@ public class EditCardActivity extends AppCompatActivity{
                 finish();
             }
         });
+
+
 
         Button cancelButton = (Button) findViewById(R.id.cancelButtonPressed);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +179,52 @@ public class EditCardActivity extends AppCompatActivity{
             }
         });
     }
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId()) {
+            case R.id.radioButton1:
+                if(checked)
+
+                    onceADay = true;
+                twiceADay = false;
+                thriceADay = false;
+                Toast.makeText(getApplicationContext(), "1 works", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.radioButton2:
+                if(checked)
+
+                    onceADay = false;
+                twiceADay = true;
+                thriceADay = false;
+                Toast.makeText(getApplicationContext(), "2 works", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.radioButton3:
+                if (checked)
+
+                    onceADay = false;
+                twiceADay = false;
+                thriceADay = true;
+                Toast.makeText(getApplicationContext(), "3 works", Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+    }
+
+    private TimePickerDialog.OnTimeSetListener timePickerListener =
+            new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
+                    hour = selectedHour;
+                    minute = selectedMinute;
+
+                    tvDisplayTime.setText(new StringBuilder().append(hour).append(":").append(minute));
+                }
+            };
 
     //protected void onActivityResult(int requestCode, int resultCode, Intent data)
     //{
