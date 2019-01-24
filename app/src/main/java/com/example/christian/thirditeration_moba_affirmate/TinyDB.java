@@ -48,7 +48,8 @@ public class TinyDB {
     private String lastImagePath = "";
 
     public TinyDB(Context appContext) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
+        //preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
+        preferences = appContext.getSharedPreferences("myAppPreferences", Context.MODE_PRIVATE);
     }
 
 
@@ -189,7 +190,7 @@ public class TinyDB {
     /**
      * Get int value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
      * @param key SharedPreferences key
-     * @param defaultValue int value returned if key was not found
+     * @param //defaultValue int value returned if key was not found
      * @return int value at 'key' or 'defaultValue' if key not found
      */
     public int getInt(String key) {
@@ -225,7 +226,7 @@ public class TinyDB {
     /**
      * Get float value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
      * @param key SharedPreferences key
-     * @param defaultValue float value returned if key was not found
+     * @param //defaultValue float value returned if key was not found
      * @return float value at 'key' or 'defaultValue' if key not found
      */
     public float getFloat(String key) {
@@ -302,7 +303,7 @@ public class TinyDB {
     /**
      * Get boolean value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
      * @param key SharedPreferences key
-     * @param defaultValue boolean value returned if key was not found
+     * @param //defaultValue boolean value returned if key was not found
      * @return boolean value at 'key' or 'defaultValue' if key not found
      */
     public boolean getBoolean(String key) {
@@ -365,6 +366,7 @@ public class TinyDB {
     public void putInt(String key, int value) {
         checkForNullKey(key);
         preferences.edit().putInt(key, value).apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -376,6 +378,7 @@ public class TinyDB {
         checkForNullKey(key);
         Integer[] myIntList = intList.toArray(new Integer[intList.size()]);
         preferences.edit().putString(key, TextUtils.join("‚‗‚", myIntList)).apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -386,6 +389,7 @@ public class TinyDB {
     public void putLong(String key, long value) {
         checkForNullKey(key);
         preferences.edit().putLong(key, value).apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -397,6 +401,7 @@ public class TinyDB {
         checkForNullKey(key);
         Long[] myLongList = longList.toArray(new Long[longList.size()]);
         preferences.edit().putString(key, TextUtils.join("‚‗‚", myLongList)).apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -407,6 +412,7 @@ public class TinyDB {
     public void putFloat(String key, float value) {
         checkForNullKey(key);
         preferences.edit().putFloat(key, value).apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -428,6 +434,7 @@ public class TinyDB {
         checkForNullKey(key);
         Double[] myDoubleList = doubleList.toArray(new Double[doubleList.size()]);
         preferences.edit().putString(key, TextUtils.join("‚‗‚", myDoubleList)).apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -438,6 +445,7 @@ public class TinyDB {
     public void putString(String key, String value) {
         checkForNullKey(key); checkForNullValue(value);
         preferences.edit().putString(key, value).apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -449,6 +457,7 @@ public class TinyDB {
         checkForNullKey(key);
         String[] myStringList = stringList.toArray(new String[stringList.size()]);
         preferences.edit().putString(key, TextUtils.join("‚‗‚", myStringList)).apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -459,6 +468,7 @@ public class TinyDB {
     public void putBoolean(String key, boolean value) {
         checkForNullKey(key);
         preferences.edit().putBoolean(key, value).apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -525,6 +535,7 @@ public class TinyDB {
      */
     public void clear() {
         preferences.edit().clear().apply();
+        preferences.edit().commit();
     }
 
     /**
@@ -577,7 +588,7 @@ public class TinyDB {
     }
     /**
      * null keys would corrupt the shared pref file and make them unreadable this is a preventive measure
-     * @param the pref key
+     * @param //the pref key
      */
     public void checkForNullKey(String key){
         if (key == null){
@@ -586,7 +597,7 @@ public class TinyDB {
     }
     /**
      * null keys would corrupt the shared pref file and make them unreadable this is a preventive measure
-     * @param the pref key
+     * @param //the pref key
      */
     public void checkForNullValue(String value){
         if (value == null){

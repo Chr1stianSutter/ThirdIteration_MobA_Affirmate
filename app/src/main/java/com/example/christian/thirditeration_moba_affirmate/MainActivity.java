@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        myPrefs = getSharedPreferences("actualPrefs", Context.MODE_PRIVATE);
+        //myPrefs = getSharedPreferences("actualPrefs", Context.MODE_PRIVATE);
 
 
         affirmations = new ArrayList<Affirmation>();
@@ -353,24 +353,27 @@ public class MainActivity extends AppCompatActivity
             MakeKey(i);
             affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
             */
+        /*
         if(affirmations.size() != 0) {
             Gson gson = new Gson();
             String json = myPrefs.getString("AllAffirmations", "");
-            ArrayList<Affirmation> obj = gson.fromJson(json, Affirmation.class);
+            ArrayList<Affirmation> obj = gson.fromJson(json, ArrayList);
             affirmations = obj;
         }
+        */
 
 
         for(int i = 0; i < myTinydb.getListString("myKeys").size(); i++){
             myKey = myTinydb.getListString("myKeys").get(i);
             affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
-
+                /*
                 SharedPreferences.Editor editor = myPrefs.edit();
                 Gson gson = new Gson();
                 String json = gson.toJson(affirmations);
                 editor.putString("AllAffirmations", json);
+                editor.apply();
                 editor.commit();
-
+                */
 
         }
 
