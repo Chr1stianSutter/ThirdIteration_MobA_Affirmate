@@ -2,15 +2,19 @@ package com.example.christian.thirditeration_moba_affirmate;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -44,6 +48,7 @@ public class EditCardActivity extends AppCompatActivity{
     public static TinyDB tinydb;
     ArrayList myAffirmations;
     ArrayList myKeyListToEdit;
+    ConstraintLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -54,6 +59,8 @@ public class EditCardActivity extends AppCompatActivity{
         final Affirmation EditAffirmation = (Affirmation) getIntent().getParcelableExtra("myEditAffirmation");
         //
         myKeyListToEdit = new ArrayList<String>();
+
+
 
          tvDisplayTimeString = EditAffirmation.firstReminderTime;
 
@@ -111,6 +118,15 @@ public class EditCardActivity extends AppCompatActivity{
 
         tinydb = MainActivity.getTinydb();
         myAffirmations = MainActivity.getAffirmations();
+
+        layout = (ConstraintLayout) findViewById(R.id.constraintLayoutEditTarget);
+        layout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyboard(view);
+                return false;
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -267,6 +283,12 @@ public class EditCardActivity extends AppCompatActivity{
                     tvDisplayTime.setText(new StringBuilder().append(hour).append(":").append(minute));
                 }
             };
+
+    protected void hideKeyboard(View view)
+    {
+        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 
     //protected void onActivityResult(int requestCode, int resultCode, Intent data)
     //{

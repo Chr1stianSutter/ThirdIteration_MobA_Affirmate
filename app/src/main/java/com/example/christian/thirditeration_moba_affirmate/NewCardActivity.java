@@ -4,12 +4,16 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -48,6 +52,7 @@ public class NewCardActivity extends AppCompatActivity {
     public static Integer listLength;
     public static TinyDB tinydb;
     ArrayList myAffirmations;
+    ConstraintLayout layout;
     //String masterKey;
     //public static Integer myOldKey;
 
@@ -85,6 +90,17 @@ public class NewCardActivity extends AppCompatActivity {
         tinydb = MainActivity.getTinydb();
 
         myAffirmations = MainActivity.getAffirmations();
+        layout = (ConstraintLayout) findViewById(R.id.constraintLayoutForUnfocus);
+        layout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyboard(view);
+                return false;
+            }
+        });
+
+
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -165,6 +181,12 @@ public class NewCardActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    protected void hideKeyboard(View view)
+    {
+        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void showTimePickerDialog(View v) {
