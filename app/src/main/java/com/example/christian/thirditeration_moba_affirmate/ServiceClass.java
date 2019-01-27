@@ -36,7 +36,7 @@ public class ServiceClass extends Service{
         //final Affirmation IntentAffirmation = (Affirmation) getIntent().getParcelableExtra("myEditAffirmation");
         data=(Affirmation) myIntent.getExtras().get("key");
         myKey = data.affirmationKeyString;
-
+        myIntent.removeExtra("key");
         Calendar alarmStartTime = Calendar.getInstance();
 
         Calendar now = Calendar.getInstance();
