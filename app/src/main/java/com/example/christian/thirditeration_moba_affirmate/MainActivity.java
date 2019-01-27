@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     String after;
     Integer hour;
     Integer minute;
+    Integer keyRecCode;
     private String CHANNEL_ID;
 
     TinyDB refreshedMyTinyDB;
@@ -315,6 +316,16 @@ public class MainActivity extends AppCompatActivity
 //
             affirmations.get(position).isEnabled = false;
             myTinydb.putObject(affirmations.get(position).affirmationKeyString, affirmations.get(position));
+
+            extractRecCodeFromKey(affirmations.get(position).affirmationKeyString);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            Intent myIntent = new Intent(this, AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    getApplicationContext(), keyRecCode, myIntent, 0);
+
+            alarmManager.cancel(pendingIntent);
+            Toast.makeText(this, "NOTIFICATION DISABLED", Toast.LENGTH_SHORT).show();
 //            //adapter.notifyItemChanged(position);
 //            //disableButton.findViewById(R.id.disableButtonPressed);
 //            //disableButton.setText("Enable");
@@ -324,6 +335,26 @@ public class MainActivity extends AppCompatActivity
 //
             affirmations.get(position).isEnabled = true;
             myTinydb.putObject(affirmations.get(position).affirmationKeyString, affirmations.get(position));
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            Calendar alarmStartTime = Calendar.getInstance();
+
+            Calendar now = Calendar.getInstance();
+            extractTime(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime);
+            alarmStartTime.set(Calendar.HOUR_OF_DAY, hour);
+            alarmStartTime.set(Calendar.MINUTE, minute);
+
+            if (now.after(alarmStartTime)) {
+                alarmStartTime.add(Calendar.DATE, 1);
+            }
+
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            extractRecCodeFromKey(myTinydb.getObject(myKey, Affirmation.class).affirmationKeyString);
+
+            PendingIntent broadcast = PendingIntent.getBroadcast(this, keyRecCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
+            Toast.makeText(this, "NOTIFICATION ENABLED", Toast.LENGTH_SHORT).show();
 
 //            ///adapter.notifyItemChanged(position);
 //            //disableButton.findViewById(R.id.disableButtonPressed);
@@ -359,7 +390,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
+    /*
     private void createNotificationChannel(String CHANNEL_ID) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -375,7 +406,7 @@ public class MainActivity extends AppCompatActivity
             notificationManager.createNotificationChannel(channel);
         }
     }
-
+    */
 
     public void initializeData(){
 
@@ -421,30 +452,31 @@ public class MainActivity extends AppCompatActivity
             */
             //NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
             //notificationManager.notify(Integer.parseInt(myKey.replaceAll("\\D", "")), mBuilder.build());
+            if(myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
 
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            Calendar alarmStartTime = Calendar.getInstance();
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                Calendar alarmStartTime = Calendar.getInstance();
 
-            Calendar now = Calendar.getInstance();
-            extractTime(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime);
-            alarmStartTime.set(Calendar.HOUR_OF_DAY,hour);
-            alarmStartTime.set(Calendar.MINUTE, minute);
+                Calendar now = Calendar.getInstance();
+                extractTime(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime);
+                alarmStartTime.set(Calendar.HOUR_OF_DAY, hour);
+                alarmStartTime.set(Calendar.MINUTE, minute);
 
-            if (now.after(alarmStartTime)) {
-                alarmStartTime.add(Calendar.DATE, 1);
+                if (now.after(alarmStartTime)) {
+                    alarmStartTime.add(Calendar.DATE, 1);
+                }
+
+                //alarmStartTime.add(Calendar.SECOND, 5);
+
+
+                //Intent intent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+                Intent intent = new Intent(this, AlarmReceiver.class);
+                extractRecCodeFromKey(myTinydb.getObject(myKey, Affirmation.class).affirmationKeyString);
+
+                PendingIntent broadcast = PendingIntent.getBroadcast(this, keyRecCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
             }
-
-            //alarmStartTime.add(Calendar.SECOND, 5);
-
-
-
-            //Intent intent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-            Intent intent = new Intent(this, AlarmReceiver.class);
-
-            PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
-
 
                 /*
                 SharedPreferences.Editor editor = myPrefs.edit();
@@ -470,6 +502,12 @@ public class MainActivity extends AppCompatActivity
         hour = Integer.valueOf(before);
         //minute = Integer.valueOf(after);
         minute = Integer.parseInt(after.replaceAll("\\D", ""));
+
+    }
+
+    public void extractRecCodeFromKey(String keyFromAffirmation){
+
+       keyRecCode = Integer.parseInt(keyFromAffirmation.replaceAll("\\D", ""));
 
     }
 
