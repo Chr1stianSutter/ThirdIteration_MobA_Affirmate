@@ -1,7 +1,10 @@
 package com.example.christian.thirditeration_moba_affirmate;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -33,6 +36,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.function.Function;
 
@@ -51,6 +55,11 @@ public class MainActivity extends AppCompatActivity
     Button editCardButton;
     ImageView enabledFlag;
     SharedPreferences myPrefs;
+    String substr;
+    String before;
+    String after;
+    Integer hour;
+    Integer minute;
     private String CHANNEL_ID;
 
     TinyDB refreshedMyTinyDB;
@@ -397,26 +406,44 @@ public class MainActivity extends AppCompatActivity
         for(int i = 0; i < myTinydb.getListString("myKeys").size(); i++){
             myKey = myTinydb.getListString("myKeys").get(i);
             affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
-
+            /*
             CHANNEL_ID = myKey;
 
             createNotificationChannel(CHANNEL_ID);
 
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_affirmate_logo_text_am_black_svg_02)
-                    .setContentTitle("Your Affirmation")
+                    .setContentTitle("AffirMate")
                     .setContentText(myTinydb.getObject(myKey, Affirmation.class).affirmation)
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .bigText(myTinydb.getObject(myKey, Affirmation.class).affirmation))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            */
+            //NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            //notificationManager.notify(Integer.parseInt(myKey.replaceAll("\\D", "")), mBuilder.build());
 
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            Calendar alarmStartTime = Calendar.getInstance();
 
-// notificationId is a unique int for each notification that you must define
-            notificationManager.notify(
+            Calendar now = Calendar.getInstance();
+            extractTime(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime);
+            alarmStartTime.set(Calendar.HOUR_OF_DAY,hour);
+            alarmStartTime.set(Calendar.MINUTE, minute);
 
-                    Integer.parseInt(myKey.replaceAll("\\D", ""))
-                    , mBuilder.build());
+            if (now.after(alarmStartTime)) {
+                alarmStartTime.add(Calendar.DATE, 1);
+            }
+
+            //alarmStartTime.add(Calendar.SECOND, 5);
+
+
+
+            //Intent intent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+            Intent intent = new Intent(this, AlarmReceiver.class);
+
+            PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
 
 
                 /*
@@ -435,6 +462,17 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+    public void extractTime(String timeUnformatted){
+        substr = ":";
+        before = timeUnformatted.substring(0, timeUnformatted.indexOf(substr));
+        after = timeUnformatted.substring(timeUnformatted.indexOf(substr) + substr.length());
+
+        hour = Integer.valueOf(before);
+        //minute = Integer.valueOf(after);
+        minute = Integer.parseInt(after.replaceAll("\\D", ""));
+
+    }
+
 
     public void initializeMenu(){
 
