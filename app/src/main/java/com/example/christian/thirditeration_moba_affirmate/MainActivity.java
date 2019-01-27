@@ -1,10 +1,15 @@
 package com.example.christian.thirditeration_moba_affirmate;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.SubMenu;
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     Button editCardButton;
     ImageView enabledFlag;
     SharedPreferences myPrefs;
+    private String CHANNEL_ID;
 
     TinyDB refreshedMyTinyDB;
 
@@ -69,6 +75,7 @@ public class MainActivity extends AppCompatActivity
         enableDisableButton = (Button) findViewById(R.id.disableButtonPressed);
         editCardButton = (Button) findViewById(R.id.editButtonPressed);
         enabledFlag = (ImageView) findViewById(R.id.enabledIndicatorImageView);
+        //CHANNEL_ID = new String();
 
         //menuNavigationViewEnabledCards = (NavigationView) findViewById(R.id.navigationViewEnabledAffirmations);
         //getMenuNavigationViewDisabledCards = (NavigationView) findViewById(R.id.navigationViewDisabledAffirmations);
@@ -282,6 +289,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+
+
+
     public void enableDisableItem(int position, Button disableButton){
         //affirmations.get(position).isEnabled = !affirmations.get(position).isEnabled;
         /*
@@ -340,6 +351,22 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    private void createNotificationChannel(String CHANNEL_ID) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 
     public void initializeData(){
 
@@ -370,6 +397,28 @@ public class MainActivity extends AppCompatActivity
         for(int i = 0; i < myTinydb.getListString("myKeys").size(); i++){
             myKey = myTinydb.getListString("myKeys").get(i);
             affirmations.add(myTinydb.getObject(myKey, Affirmation.class));
+
+            CHANNEL_ID = myKey;
+
+            createNotificationChannel(CHANNEL_ID);
+
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_affirmate_logo_text_am_black_svg_02)
+                    .setContentTitle("Your Affirmation")
+                    .setContentText(myTinydb.getObject(myKey, Affirmation.class).affirmation)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(myTinydb.getObject(myKey, Affirmation.class).affirmation))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+// notificationId is a unique int for each notification that you must define
+            notificationManager.notify(
+
+                    Integer.parseInt(myKey.replaceAll("\\D", ""))
+                    , mBuilder.build());
+
+
                 /*
                 SharedPreferences.Editor editor = myPrefs.edit();
                 Gson gson = new Gson();
