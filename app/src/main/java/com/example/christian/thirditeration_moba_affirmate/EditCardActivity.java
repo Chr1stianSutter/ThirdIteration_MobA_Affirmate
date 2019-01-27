@@ -1,6 +1,8 @@
 package com.example.christian.thirditeration_moba_affirmate;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -49,6 +51,7 @@ public class EditCardActivity extends AppCompatActivity{
     ArrayList myAffirmations;
     ArrayList myKeyListToEdit;
     ConstraintLayout layout;
+    Integer keyRecCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -221,6 +224,16 @@ public class EditCardActivity extends AppCompatActivity{
                     public void onClick(DialogInterface dialog, int id) {
                         Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
 
+                        extractRecCodeFromKey(toDelete.affirmationKeyString);
+
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        Intent alarmIntent = new Intent(getBaseContext(), AlarmReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                getApplicationContext(), keyRecCode, alarmIntent, 0);
+
+                        alarmManager.cancel(pendingIntent);
+                        Toast.makeText(getBaseContext(), "NOTIFICATION DISABLED", Toast.LENGTH_SHORT).show();
+
                         myKeyListToEdit= tinydb.getListString("myKeys");
                         myKeyListToEdit.remove(toDelete.affirmationKeyString);
                         tinydb.putListString("myKeys", myKeyListToEdit);
@@ -239,6 +252,12 @@ public class EditCardActivity extends AppCompatActivity{
         alert.setMessage("Do you want to DELETE this Affirmation?");
         alert.show();
 
+
+    }
+
+    public void extractRecCodeFromKey(String keyFromAffirmation){
+
+        keyRecCode = Integer.parseInt(keyFromAffirmation.replaceAll("\\D", ""));
 
     }
 

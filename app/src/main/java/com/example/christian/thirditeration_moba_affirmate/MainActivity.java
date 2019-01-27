@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -454,7 +455,8 @@ public class MainActivity extends AppCompatActivity
             //notificationManager.notify(Integer.parseInt(myKey.replaceAll("\\D", "")), mBuilder.build());
             if(myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
 
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                //AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                /*
                 Calendar alarmStartTime = Calendar.getInstance();
 
                 Calendar now = Calendar.getInstance();
@@ -465,17 +467,29 @@ public class MainActivity extends AppCompatActivity
                 if (now.after(alarmStartTime)) {
                     alarmStartTime.add(Calendar.DATE, 1);
                 }
+                */
 
-                //alarmStartTime.add(Calendar.SECOND, 5);
-
-
-                //Intent intent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+                /*
                 Intent intent = new Intent(this, AlarmReceiver.class);
                 extractRecCodeFromKey(myTinydb.getObject(myKey, Affirmation.class).affirmationKeyString);
-
                 PendingIntent broadcast = PendingIntent.getBroadcast(this, keyRecCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
+                */
+                /*
+
+                Intent intent = new Intent(this, AlarmReceiver.class);
+                PendingIntent broadcast = PendingIntent.getService(this, 0, intent, 0);
+                extractRecCodeFromKey(myTinydb.getObject(myKey, Affirmation.class).affirmationKeyString);
+                AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                alarm.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
+                */
+
+                Intent intent = new Intent(this, ServiceClass.class);
+                intent.putExtra("key",myTinydb.getObject(myKey, Affirmation.class));
+                //startService(new Intent(getBaseContext(), ServiceClass.class));
+                startService(intent);
+
+
             }
 
                 /*
