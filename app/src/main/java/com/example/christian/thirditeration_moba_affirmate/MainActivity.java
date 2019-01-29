@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity
                 adapter.notifyItemChanged(position);
                 adapter.notifyDataSetChanged();
                 //myTinydb = RVAdapter.getRefreshedMyTinyDB();
+                initializeData();
                initializeMenu();
                 //refreshMenu();
                 //adapter.notifyItemChanged(position);
@@ -317,7 +318,7 @@ public class MainActivity extends AppCompatActivity
 //
             affirmations.get(position).isEnabled = false;
             myTinydb.putObject(affirmations.get(position).affirmationKeyString, affirmations.get(position));
-
+            /*
             extractRecCodeFromKey(affirmations.get(position).affirmationKeyString);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -331,11 +332,13 @@ public class MainActivity extends AppCompatActivity
 //            //disableButton.findViewById(R.id.disableButtonPressed);
 //            //disableButton.setText("Enable");
 //            //Toast.makeText(MainActivity.this, "Disabled", Toast.LENGTH_SHORT).show();
+            */
 //
         }else{
 //
             affirmations.get(position).isEnabled = true;
             myTinydb.putObject(affirmations.get(position).affirmationKeyString, affirmations.get(position));
+            /*
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             Calendar alarmStartTime = Calendar.getInstance();
@@ -356,6 +359,8 @@ public class MainActivity extends AppCompatActivity
 
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
             Toast.makeText(this, "NOTIFICATION ENABLED", Toast.LENGTH_SHORT).show();
+            startService(intent);
+            */
 
 //            ///adapter.notifyItemChanged(position);
 //            //disableButton.findViewById(R.id.disableButtonPressed);

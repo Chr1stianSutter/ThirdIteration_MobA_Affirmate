@@ -67,6 +67,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context,CHANNEL_ID);
             Notification notification = mBuilder.setContentTitle("AffirMate")
+                    .setAutoCancel(true)
                     .setContentText(data.affirmation)
                     .setTicker("New Message Alert!")
                     .setSmallIcon(R.drawable.ic_affirmate_logo_text_am_black_svg_02)
