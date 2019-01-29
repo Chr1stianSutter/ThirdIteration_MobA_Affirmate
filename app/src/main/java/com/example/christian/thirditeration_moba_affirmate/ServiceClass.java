@@ -4,8 +4,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import  android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.Calendar;
 
@@ -30,13 +33,14 @@ public class ServiceClass extends Service{
 
     @Override
     public int onStartCommand(Intent myIntent, int flags, int startId){
-        Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+
 
         myTinydb = MainActivity.getTinydb();
         //final Affirmation IntentAffirmation = (Affirmation) getIntent().getParcelableExtra("myEditAffirmation");
         data=(Affirmation) myIntent.getExtras().get("key");
         myKey = data.affirmationKeyString;
-        myIntent.removeExtra("key");
+        Toast.makeText(this, "Service Started" + data.affirmationKeyString, Toast.LENGTH_SHORT).show();
+
         Calendar alarmStartTime = Calendar.getInstance();
 
         Calendar now = Calendar.getInstance();
@@ -48,9 +52,30 @@ public class ServiceClass extends Service{
             alarmStartTime.add(Calendar.DATE, 1);
         }
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(this, AlarmReceiver.class);
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        //Bundle bundle = new Bundle();
+        //Affirmation objectForBundle = new Affirmation(data.affirmation, data.remindOnceADay, data.remindTwiceADay, data.remindThriceADay, data.firstReminderTime, data.isEnabled, data.affirmationKeyString);
+
+        byte[] data2 = SerializationUtils.serialize(data.affirmationKeyString);
+
+
+        //bundle.putSerializable("Affirmation", data);
+        //intent.putExtra("key2", data2);
+        intent.putExtra("key2", data2);
+        //intent.putExtra("key2" ,bundle);
+
+        /*
+        intent.putExtra("key2",data);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setAction("android.media.action.DISPLAY_NOTIFICATION");
+        */
+        //myIntent.removeExtra("key");
         extractRecCodeFromKey(myTinydb.getObject(myKey, Affirmation.class).affirmationKeyString);
-        PendingIntent broadcast = PendingIntent.getBroadcast(this, keyRecCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
+        PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), keyRecCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), uniqueInt, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
 
         return START_STICKY;
@@ -60,7 +85,7 @@ public class ServiceClass extends Service{
     @Override
     public void onDestroy(){
         super.onDestroy();
-        Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Service Stopped" + data.affirmationKeyString, Toast.LENGTH_SHORT).show();
     }
     public void extractRecCodeFromKey(String keyFromAffirmation){
 

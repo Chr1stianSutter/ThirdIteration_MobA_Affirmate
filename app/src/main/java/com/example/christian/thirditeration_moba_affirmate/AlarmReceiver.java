@@ -10,13 +10,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 public class AlarmReceiver extends BroadcastReceiver {
     private static String CHANNEL_ID;
     public static TinyDB myTinydb;
     public String myKey;
+    Affirmation data;
+
+
 
 
     @Override
@@ -24,11 +30,30 @@ public class AlarmReceiver extends BroadcastReceiver {
         Toast.makeText(context, "ON RECEIVE WAS CALLED", Toast.LENGTH_SHORT).show();
 
         myTinydb = MainActivity.getTinydb();
+        //byte[] defaultValue = new byte[2];
+        byte[] dataFromIntent = intent.getByteArrayExtra("key2");
+        String dataAffirmationKeyString = (String) SerializationUtils.deserialize(dataFromIntent);
 
-        for (int i = 0; i < myTinydb.getListString("myKeys").size(); i++) {
-            myKey = myTinydb.getListString("myKeys").get(i);
+        data = myTinydb.getObject(dataAffirmationKeyString, Affirmation.class);
+        //myKey = (String) intent.getExtra("key2");
+        //Affirmation data = SerializationUtils.deserialize(data);
 
-            CHANNEL_ID = myKey;
+        /*
+        Bundle bundle = intent.getBundleExtra("key2");
+        if (bundle != null) {
+            data = (Affirmation) bundle.getSerializable("Affirmation");
+
+        }
+        */
+
+        //data=(Affirmation) intent.getExtras().get("key2");
+        //data =(Affirmation) resultPendingIntent
+
+        //for (int i = 0; i < myTinydb.getListString("myKeys").size(); i++) {
+           // myKey = myTinydb.getListString("myKeys").get(i);
+
+
+            CHANNEL_ID = data.affirmationKeyString;
 
             //createNotificationChannel(CHANNEL_ID);
             Intent goToMain = new Intent(context, MainActivity.class);
@@ -36,11 +61,13 @@ public class AlarmReceiver extends BroadcastReceiver {
             stackBuilder.addParentStack(MainActivity.class);
             stackBuilder.addNextIntent(goToMain);
 
-            PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            //PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
+            PendingIntent pendingIntent = stackBuilder.getPendingIntent(uniqueInt, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context,CHANNEL_ID);
             Notification notification = mBuilder.setContentTitle("AffirMate")
-                    .setContentText(myTinydb.getObject(myKey, Affirmation.class).affirmation)
+                    .setContentText(data.affirmation)
                     .setTicker("New Message Alert!")
                     .setSmallIcon(R.drawable.ic_affirmate_logo_text_am_black_svg_02)
                     .setContentIntent(pendingIntent).build();
@@ -85,7 +112,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             notificationManager.notify(0, notification);
 
-        }
+        //}
     }
 
 }
