@@ -51,27 +51,27 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         //for (int i = 0; i < myTinydb.getListString("myKeys").size(); i++) {
            // myKey = myTinydb.getListString("myKeys").get(i);
+            if(data.isEnabled == true) {
 
+                CHANNEL_ID = data.affirmationKeyString;
 
-            CHANNEL_ID = data.affirmationKeyString;
+                //createNotificationChannel(CHANNEL_ID);
+                Intent goToMain = new Intent(context, MainActivity.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(goToMain);
 
-            //createNotificationChannel(CHANNEL_ID);
-            Intent goToMain = new Intent(context, MainActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(MainActivity.class);
-            stackBuilder.addNextIntent(goToMain);
+                //PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
+                PendingIntent pendingIntent = stackBuilder.getPendingIntent(uniqueInt, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            //PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
-            PendingIntent pendingIntent = stackBuilder.getPendingIntent(uniqueInt, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context,CHANNEL_ID);
-            Notification notification = mBuilder.setContentTitle("AffirMate")
-                    .setAutoCancel(true)
-                    .setContentText(data.affirmation)
-                    .setTicker("New Message Alert!")
-                    .setSmallIcon(R.drawable.ic_affirmate_logo_text_am_black_svg_02)
-                    .setContentIntent(pendingIntent).build();
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
+                Notification notification = mBuilder.setContentTitle("AffirMate")
+                        .setAutoCancel(true)
+                        .setContentText(data.affirmation)
+                        .setTicker("New Message Alert!")
+                        .setSmallIcon(R.drawable.ic_affirmate_logo_text_am_black_svg_02)
+                        .setContentIntent(pendingIntent).build();
                     /*
                     .setSmallIcon(R.drawable.ic_affirmate_logo_text_am_black_svg_02)
                     .setContentTitle("AffirMate")
@@ -80,11 +80,11 @@ public class AlarmReceiver extends BroadcastReceiver {
                             .bigText(myTinydb.getObject(myKey, Affirmation.class).affirmation))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
                     */
-            //Intent notificationIntent = new Intent(context, NotificationActivity.class);
+                //Intent notificationIntent = new Intent(context, NotificationActivity.class);
 
 
-            //stackBuilder.addParentStack(NotificationActivity.class);
-            //stackBuilder.addNextIntent(notificationIntent);
+                //stackBuilder.addParentStack(NotificationActivity.class);
+                //stackBuilder.addNextIntent(notificationIntent);
 
 
 
@@ -97,21 +97,22 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentIntent(pendingIntent).build();
             */
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                mBuilder.setChannelId(CHANNEL_ID);
-            }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    mBuilder.setChannelId(CHANNEL_ID);
+                }
 
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel(
-                        CHANNEL_ID,
-                        "Affirmation_Notification", importance
-                );
-                notificationManager.createNotificationChannel(channel);
-            }
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel(
+                            CHANNEL_ID,
+                            "Affirmation_Notification", importance
+                    );
+                    notificationManager.createNotificationChannel(channel);
+                }
 
-            notificationManager.notify(0, notification);
+                notificationManager.notify(0, notification);
+            }
 
         //}
     }
