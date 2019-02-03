@@ -6,13 +6,14 @@ import  android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.Calendar;
 
-public class ServiceClass extends Service{
+public class ServiceClass extends Service {
 
     public static TinyDB myTinydb;
     Integer keyRecCode;
@@ -25,7 +26,7 @@ public class ServiceClass extends Service{
     Affirmation data;
 
     @Override
-    public IBinder onBind(Intent myIntent){
+    public IBinder onBind(Intent myIntent) {
 
 
         return null;
@@ -68,16 +69,18 @@ public class ServiceClass extends Service{
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         Toast.makeText(this, "Service Stopped" + data.affirmationKeyString, Toast.LENGTH_SHORT).show();
     }
-    public void extractRecCodeFromKey(String keyFromAffirmation){
+
+    public void extractRecCodeFromKey(String keyFromAffirmation) {
 
         keyRecCode = Integer.parseInt(keyFromAffirmation.replaceAll("\\D", ""));
 
     }
-    public void extractTime(String timeUnformatted){
+
+    public void extractTime(String timeUnformatted) {
         substr = ":";
         before = timeUnformatted.substring(0, timeUnformatted.indexOf(substr));
         after = timeUnformatted.substring(timeUnformatted.indexOf(substr) + substr.length());
@@ -87,13 +90,14 @@ public class ServiceClass extends Service{
         minute = Integer.parseInt(after.replaceAll("\\D", ""));
 
     }
-    public void setAlarm(String firstReminderTime, Integer additionalHours){
+
+    public void setAlarm(String firstReminderTime, Integer additionalHours) {
         Calendar alarmStartTime = Calendar.getInstance();
 
         Calendar now = Calendar.getInstance();
         extractTime(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime);
         alarmStartTime.set(Calendar.HOUR_OF_DAY, hour);
-        alarmStartTime.set(Calendar.MINUTE, minute+additionalHours);
+        alarmStartTime.set(Calendar.MINUTE, minute + additionalHours);
 
         if (now.after(alarmStartTime)) {
             alarmStartTime.add(Calendar.DATE, 1);
@@ -120,14 +124,60 @@ public class ServiceClass extends Service{
         //myIntent.removeExtra("key");
         extractRecCodeFromKey(myTinydb.getObject(myKey, Affirmation.class).affirmationKeyString);
         int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
-        PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), keyRecCode+additionalHours, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), keyRecCode + additionalHours, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), uniqueInt, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
 
 
-
-
     }
+/*
+    @Override
+    public void  onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
 
+        //Log.d(TAG, "TASK REMOVED");
+
+        PendingIntent service = PendingIntent.getService(
+                getApplicationContext(),
+                1001,
+                new Intent(getApplicationContext(), ServiceClass.class),
+                PendingIntent.FLAG_ONE_SHOT);
+
+        for(int i = 0; i < myTinydb.getListString("myKeys").size(); i++){
+            myKey = myTinydb.getListString("myKeys").get(i);
+
+            if (myTinydb.getObject(myKey, Affirmation.class).remindOnceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
+
+                //return START_STICKY;
+
+            } else if (myTinydb.getObject(myKey, Affirmation.class).remindTwiceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 3);
+                //setAlarm(data.firstReminderTime, 6);
+
+                //return START_STICKY;
+
+            } else if (myTinydb.getObject(myKey, Affirmation.class).remindThriceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 2);
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 4);
+
+                //return START_STICKY;
+
+            }
+
+            ///return START_STICKY;
+
+
+        }
+
+
+        }
+
+        //AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, service);
+
+*/
 }
