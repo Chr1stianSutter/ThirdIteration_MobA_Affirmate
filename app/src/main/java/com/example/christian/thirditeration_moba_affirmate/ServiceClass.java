@@ -71,7 +71,33 @@ public class ServiceClass extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "Service Stopped" + data.affirmationKeyString, Toast.LENGTH_SHORT).show();
+        myTinydb = MainActivity.getTinydb();
+        for(int i = 0; i < myTinydb.getListString("myKeys").size(); i++) {
+            myKey = myTinydb.getListString("myKeys").get(i);
+
+            if (myTinydb.getObject(myKey, Affirmation.class).remindOnceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
+
+                //return START_STICKY;
+
+            } else if (myTinydb.getObject(myKey, Affirmation.class).remindTwiceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 3);
+                //setAlarm(data.firstReminderTime, 6);
+
+                //return START_STICKY;
+
+            } else if (myTinydb.getObject(myKey, Affirmation.class).remindThriceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 2);
+                setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 4);
+
+                //return START_STICKY;
+
+            }
+        }
+
+            Toast.makeText(this, "Service Stopped" + data.affirmationKeyString, Toast.LENGTH_SHORT).show();
     }
 
     public void extractRecCodeFromKey(String keyFromAffirmation) {
@@ -131,19 +157,19 @@ public class ServiceClass extends Service {
 
 
     }
-/*
+
     @Override
-    public void  onTaskRemoved(Intent rootIntent) {
+    public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
 
         //Log.d(TAG, "TASK REMOVED");
-
+        /*
         PendingIntent service = PendingIntent.getService(
                 getApplicationContext(),
                 1001,
                 new Intent(getApplicationContext(), ServiceClass.class),
                 PendingIntent.FLAG_ONE_SHOT);
-
+        */
         for(int i = 0; i < myTinydb.getListString("myKeys").size(); i++){
             myKey = myTinydb.getListString("myKeys").get(i);
 
@@ -168,7 +194,7 @@ public class ServiceClass extends Service {
 
             }
 
-            ///return START_STICKY;
+            //return START_STICKY;
 
 
         }
@@ -179,5 +205,5 @@ public class ServiceClass extends Service {
         //AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, service);
 
-*/
+
 }

@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity
                 //startActivity(myIntent);
 
             }
+
         });
 
         /*
@@ -590,6 +591,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+
     private void initializeAdapter(){
         RVAdapter adapter = new RVAdapter(affirmations);
         rv.setAdapter(adapter);
@@ -634,8 +637,31 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
 
-        int id = item.getItemId();
+        //int id = item.getItemId();
+
+        RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
+        for (int i = 0; i < myTinydb.getListString("myKeys").size(); i++){
+            myKey = myTinydb.getListString("myKeys").get(i);
+            String affirmationText = myTinydb.getObject(myKey, Affirmation.class).affirmation;
+            String itemTitle = item.getTitle().toString();
+
+            if( affirmationText.equals(itemTitle)  ) {
+                /*
+                Intent myIntent = new Intent(getBaseContext(), EditCardActivity.class);
+                myIntent.putExtra("myEditAffirmation", myTinydb.getObject(myKey, Affirmation.class));
+                myIntent.putExtra("myEditAffirmation", myTinydb.getObject(myKey,Affirmation.class));
+                */
+                Toast.makeText(this, "INSIDE IF NOW!", Toast.LENGTH_SHORT).show();
+                rv.scrollToPosition(i);
+                rv.getLayoutManager().scrollToPosition(i);
+                //ViewHolder.getAdapterPosition();
+                //Adapter.onViewAttachedToWindow()
+            }
+        }
+
+
         /*
+
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {

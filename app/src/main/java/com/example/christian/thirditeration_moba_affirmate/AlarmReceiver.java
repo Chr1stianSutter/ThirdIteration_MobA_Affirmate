@@ -35,6 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String dataAffirmationKeyString = (String) SerializationUtils.deserialize(dataFromIntent);
 
         data = myTinydb.getObject(dataAffirmationKeyString, Affirmation.class);
+        //data = myTinydb.getObject("affirmation0", Affirmation.class);
         //myKey = (String) intent.getExtra("key2");
         //Affirmation data = SerializationUtils.deserialize(data);
 
