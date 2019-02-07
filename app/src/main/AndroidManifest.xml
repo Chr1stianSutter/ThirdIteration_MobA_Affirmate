@@ -4,12 +4,20 @@
 
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    
+
+    <!--
+    * icon with text
+    * android:icon="@mipmap/ic_launcher_launcher_icon"
+    * android:roundIcon="@mipmap/ic_launcher_launcher_icon_round"
+    -->
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher_am_logo_text_big"
+        android:icon="@mipmap/ic_launcher_am_logo"
+
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+
+        android:roundIcon="@mipmap/ic_launcher_am_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 

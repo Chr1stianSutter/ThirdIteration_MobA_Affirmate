@@ -122,8 +122,8 @@ public class ServiceClass extends Service {
 
         Calendar now = Calendar.getInstance();
         extractTime(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime);
-        alarmStartTime.set(Calendar.HOUR_OF_DAY, hour);
-        alarmStartTime.set(Calendar.MINUTE, minute + additionalHours);
+        alarmStartTime.set(Calendar.HOUR_OF_DAY, hour + additionalHours);
+        alarmStartTime.set(Calendar.MINUTE, minute );
 
         if (now.after(alarmStartTime)) {
             alarmStartTime.add(Calendar.DATE, 1);
