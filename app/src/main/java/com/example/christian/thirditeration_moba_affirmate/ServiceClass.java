@@ -4,13 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import  android.app.Service;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
-
 import org.apache.commons.lang3.SerializationUtils;
-
 import java.util.Calendar;
 
 public class ServiceClass extends Service {
@@ -37,29 +32,22 @@ public class ServiceClass extends Service {
 
 
         myTinydb = MainActivity.getTinydb();
-        //final Affirmation IntentAffirmation = (Affirmation) getIntent().getParcelableExtra("myEditAffirmation");
         data = (Affirmation) myIntent.getExtras().get("key");
         myKey = data.affirmationKeyString;
-        Toast.makeText(this, "Service Started" + data.affirmationKeyString, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Service Started" + data.affirmationKeyString, Toast.LENGTH_SHORT).show();
+
 
         if (data.remindOnceADay == true && data.isEnabled == true) {
             setAlarm(data.firstReminderTime, 0);
 
-            //return START_STICKY;
-
         } else if (data.remindTwiceADay == true && data.isEnabled == true) {
             setAlarm(data.firstReminderTime, 0);
             setAlarm(data.firstReminderTime, 3);
-            //setAlarm(data.firstReminderTime, 6);
-
-            //return START_STICKY;
 
         } else if (data.remindThriceADay == true && data.isEnabled == true) {
             setAlarm(data.firstReminderTime, 0);
             setAlarm(data.firstReminderTime, 2);
             setAlarm(data.firstReminderTime, 4);
-
-            //return START_STICKY;
 
         }
 
@@ -78,26 +66,19 @@ public class ServiceClass extends Service {
             if (myTinydb.getObject(myKey, Affirmation.class).remindOnceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
 
-                //return START_STICKY;
-
             } else if (myTinydb.getObject(myKey, Affirmation.class).remindTwiceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 3);
-                //setAlarm(data.firstReminderTime, 6);
-
-                //return START_STICKY;
 
             } else if (myTinydb.getObject(myKey, Affirmation.class).remindThriceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 2);
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 4);
 
-                //return START_STICKY;
-
             }
         }
 
-            Toast.makeText(this, "Service Stopped" + data.affirmationKeyString, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Service Stopped" + data.affirmationKeyString, Toast.LENGTH_SHORT).show();
     }
 
     public void extractRecCodeFromKey(String keyFromAffirmation) {
@@ -112,7 +93,6 @@ public class ServiceClass extends Service {
         after = timeUnformatted.substring(timeUnformatted.indexOf(substr) + substr.length());
 
         hour = Integer.valueOf(before);
-        //minute = Integer.valueOf(after);
         minute = Integer.parseInt(after.replaceAll("\\D", ""));
 
     }
@@ -131,28 +111,12 @@ public class ServiceClass extends Service {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        //Bundle bundle = new Bundle();
-        //Affirmation objectForBundle = new Affirmation(data.affirmation, data.remindOnceADay, data.remindTwiceADay, data.remindThriceADay, data.firstReminderTime, data.isEnabled, data.affirmationKeyString);
-
         byte[] data2 = SerializationUtils.serialize(data.affirmationKeyString);
 
-
-        //bundle.putSerializable("Affirmation", data);
-        //intent.putExtra("key2", data2);
         intent.putExtra("key2", data2);
-        //intent.putExtra("key2" ,bundle);
 
-        /*
-        intent.putExtra("key2",data);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.setAction("android.media.action.DISPLAY_NOTIFICATION");
-        */
-        //myIntent.removeExtra("key");
         extractRecCodeFromKey(myTinydb.getObject(myKey, Affirmation.class).affirmationKeyString);
-        int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
         PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), keyRecCode + additionalHours, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), uniqueInt, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), broadcast);
 
 
@@ -161,49 +125,28 @@ public class ServiceClass extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-
-        //Log.d(TAG, "TASK REMOVED");
         /*
-        PendingIntent service = PendingIntent.getService(
-                getApplicationContext(),
-                1001,
-                new Intent(getApplicationContext(), ServiceClass.class),
-                PendingIntent.FLAG_ONE_SHOT);
-        */
         for(int i = 0; i < myTinydb.getListString("myKeys").size(); i++){
             myKey = myTinydb.getListString("myKeys").get(i);
 
             if (myTinydb.getObject(myKey, Affirmation.class).remindOnceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
 
-                //return START_STICKY;
-
             } else if (myTinydb.getObject(myKey, Affirmation.class).remindTwiceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 3);
-                //setAlarm(data.firstReminderTime, 6);
-
-                //return START_STICKY;
 
             } else if (myTinydb.getObject(myKey, Affirmation.class).remindThriceADay == true && myTinydb.getObject(myKey, Affirmation.class).isEnabled == true) {
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 0);
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 2);
                 setAlarm(myTinydb.getObject(myKey, Affirmation.class).firstReminderTime, 4);
 
-                //return START_STICKY;
-
             }
 
-            //return START_STICKY;
-
 
         }
 
-
+        */
         }
-
-        //AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, service);
-
 
 }

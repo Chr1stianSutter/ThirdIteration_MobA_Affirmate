@@ -12,6 +12,7 @@
     <string name="cancel_affirmation">Cancel</string>
     <string name="delete_affirmation">Delete</string>
     <string name="app_name">AffirMate</string>
+    <string name="app_bar_label">Your Affirmations</string>
     <string name="action_settings">Settings</string>
     <string name="first_affirmation">I am a capable UX-Designer</string>
     <string name="first_Remind_me">Remind me: Once a day</string>

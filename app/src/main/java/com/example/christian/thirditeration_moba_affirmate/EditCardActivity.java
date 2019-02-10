@@ -3,11 +3,9 @@ package com.example.christian.thirditeration_moba_affirmate;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
@@ -21,17 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 
 public class EditCardActivity extends AppCompatActivity{
 
     TextView tvDisplayTime;
-    Integer hour;
-    Integer minute;
-
     String affirmationText;
     EditText et1;
     RadioButton radioButtonOnceADay;
@@ -43,9 +36,6 @@ public class EditCardActivity extends AppCompatActivity{
     String firstReminderTimeString;
     Boolean isEnabled;
     String affirmationKeyString;
-    String substr;
-    String before;
-    String after;
     String tvDisplayTimeString;
     public static TinyDB tinydb;
     ArrayList myAffirmations;
@@ -59,47 +49,26 @@ public class EditCardActivity extends AppCompatActivity{
 
 
 
-        final Affirmation EditAffirmation = (Affirmation) getIntent().getParcelableExtra("myEditAffirmation");
-        //
+        final Affirmation editAffirmation = (Affirmation) getIntent().getParcelableExtra("myEditAffirmation");
+
         myKeyListToEdit = new ArrayList<String>();
 
 
 
-         tvDisplayTimeString = EditAffirmation.firstReminderTime;
+         tvDisplayTimeString = editAffirmation.firstReminderTime;
 
-         substr = ":";
-         before = tvDisplayTimeString.substring(0, tvDisplayTimeString.indexOf(substr));
-         after = tvDisplayTimeString.substring(tvDisplayTimeString.indexOf(substr) + substr.length());
+        if (editAffirmation != null) {
 
-         hour = Integer.valueOf(before);
-         //minute = Integer.valueOf(after);
-        minute = Integer.parseInt(after.replaceAll("\\D", ""));
-        //
+            affirmationText = editAffirmation.affirmation;
 
-        //
+            onceADay = editAffirmation.remindOnceADay;
+            twiceADay = editAffirmation.remindTwiceADay;
+            thriceADay = editAffirmation.remindThriceADay;
 
-        if (EditAffirmation != null) {
-            //affirmations.add(myTinydb.getObject("testKeyNewCard", Affirmation.class));
-            //affirmations.add(newlyAddedAffirmation);
+            firstReminderTimeString = editAffirmation.firstReminderTime;
+            isEnabled = editAffirmation.isEnabled;
+            affirmationKeyString = editAffirmation.affirmationKeyString;
 
-            affirmationText = EditAffirmation.affirmation;
-
-            onceADay = EditAffirmation.remindOnceADay;
-            twiceADay = EditAffirmation.remindTwiceADay;
-            thriceADay = EditAffirmation.remindThriceADay;
-
-            firstReminderTimeString = EditAffirmation.firstReminderTime;
-            isEnabled = EditAffirmation.isEnabled;
-            affirmationKeyString = EditAffirmation.affirmationKeyString;
-            /*
-            if(EditAffirmation.firstReminderTime != null) {
-                //tvDisplayTime.setText(firstReminderTimeString);
-                tvDisplayTime.setText(tvDisplayTimeString);
-            }else{
-                tvDisplayTime.setText("FRT == NULL");
-            }
-            //tvDisplayTime.setText(firstReminderTimeString);
-            */
         }
         setContentView(R.layout.activity_edit_card);
 
@@ -111,13 +80,7 @@ public class EditCardActivity extends AppCompatActivity{
 
         radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
         tvDisplayTime = (TextView) findViewById(R.id.tvTime);
-        tvDisplayTime.setText(EditAffirmation.firstReminderTime);
-        //super.onActivityResult(savedInstanceState);
-
-
-        //onceADay = true;
-        //twiceADay = false;
-        //thriceADay = false;
+        tvDisplayTime.setText(editAffirmation.firstReminderTime);
 
         tinydb = MainActivity.getTinydb();
         myAffirmations = MainActivity.getAffirmations();
@@ -139,9 +102,6 @@ public class EditCardActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // back button pressed
-                //Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                //setResult(RESULT_OK,myIntent);
-                //startActivity(myIntent);
                 finish();
             }
         });
@@ -152,11 +112,9 @@ public class EditCardActivity extends AppCompatActivity{
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //finish();
-                showDeleteAffirmationDialog(EditAffirmation);
-//                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-//                //setResult(RESULT_OK,myIntent);
-//                startActivity(myIntent);
+
+                showDeleteAffirmationDialog(editAffirmation);
+//
             }
         });
 
@@ -181,14 +139,13 @@ public class EditCardActivity extends AppCompatActivity{
 
                     isEnabled = true;
 
-                    affirmationKeyString = EditAffirmation.affirmationKeyString;
+                    affirmationKeyString = editAffirmation.affirmationKeyString;
 
 
                     Affirmation editedAffirmation = new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString, isEnabled, affirmationKeyString);
-                    //tinydb.putObject("testKeyNewCard", newAffirmation);
+
 
                     Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                    //getIntent().removeExtra("myNewAffirmation");
                     myIntent.removeExtra("myNewAffirmation");
                     myIntent.putExtra("myEditedAffirmation", editedAffirmation );
                     myIntent.replaceExtras(myIntent.putExtra("myEditedAffirmation", editedAffirmation ));
@@ -212,14 +169,10 @@ public class EditCardActivity extends AppCompatActivity{
     }
 
     public void showDeleteAffirmationDialog(final Affirmation toDelete){
-        //DialogFragment newFragment = new DeleteCardAlertFragment();
-        //newFragment.show(getSupportFragmentManager(), "deleteAlert");
-
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View view=inflater.inflate(R.layout.activity_edit_card, null);
-        //alert.setCustomTitle(view);
                 alert.setPositiveButton(R.string.yes_delete_card, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
@@ -232,7 +185,7 @@ public class EditCardActivity extends AppCompatActivity{
                                 getApplicationContext(), keyRecCode, alarmIntent, 0);
 
                         alarmManager.cancel(pendingIntent);
-                        Toast.makeText(getBaseContext(), "NOTIFICATION DISABLED", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), "AFFIRMATION DELETED", Toast.LENGTH_SHORT).show();
 
                         myKeyListToEdit= tinydb.getListString("myKeys");
                         myKeyListToEdit.remove(toDelete.affirmationKeyString);
@@ -270,7 +223,7 @@ public class EditCardActivity extends AppCompatActivity{
                     onceADay = true;
                 twiceADay = false;
                 thriceADay = false;
-                Toast.makeText(getApplicationContext(), "1 works", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "1 works", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radioButton2:
                 if(checked)
@@ -278,7 +231,7 @@ public class EditCardActivity extends AppCompatActivity{
                     onceADay = false;
                 twiceADay = true;
                 thriceADay = false;
-                Toast.makeText(getApplicationContext(), "2 works", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "2 works", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radioButton3:
                 if (checked)
@@ -286,12 +239,12 @@ public class EditCardActivity extends AppCompatActivity{
                     onceADay = false;
                 twiceADay = false;
                 thriceADay = true;
-                Toast.makeText(getApplicationContext(), "3 works", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "3 works", Toast.LENGTH_SHORT).show();
                 break;
 
         }
     }
-
+    /*
     private TimePickerDialog.OnTimeSetListener timePickerListener =
             new TimePickerDialog.OnTimeSetListener() {
                 @Override
@@ -302,19 +255,11 @@ public class EditCardActivity extends AppCompatActivity{
                     tvDisplayTime.setText(new StringBuilder().append(hour).append(":").append(minute));
                 }
             };
-
+    */
     protected void hideKeyboard(View view)
     {
         InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
-
-    //protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    //{
-        //super.onActivityResult(requestCode, resultCode, data);
-
-        //Get Data of affirmation to edit
-
-    //}
 
 }

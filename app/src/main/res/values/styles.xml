@@ -10,6 +10,7 @@
         <item name="cardViewStyle">@style/CardView.Light</item>
         <item name="navigationViewStyle">@style/Widget.Design.NavigationView</item>item>
 
+
         <item name="colorPrimary">@color/colorLightGray</item>
         <item name="colorPrimaryDark">@color/colorLightGray</item>
         <item name="colorAccent">@color/colorAccent</item>

@@ -1,9 +1,8 @@
 package com.example.christian.thirditeration_moba_affirmate;
 
-import android.app.TimePickerDialog;
+
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,27 +12,16 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.app.Dialog;
-import android.text.format.DateFormat;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 
 public class NewCardActivity extends AppCompatActivity {
 
     TextView tvDisplayTime;
-    Integer hour;
-    Integer minute;
-    SharedPreferences prefs;
-    SharedPreferences.Editor prefsEditor;
     String affirmationText;
     EditText et1;
     RadioButton radioButtonOnceADay;
@@ -45,30 +33,9 @@ public class NewCardActivity extends AppCompatActivity {
     String firstReminderTimeString;
     Boolean isEnabled;
     String affirmationKeyString;
-    //public static ArrayList affirmationsList;
-    ArrayList myAffirmationsList;
-    Integer listLengthPlusOne;
-    String affirmationsKey;
-    public static Integer listLength;
     public static TinyDB tinydb;
     ArrayList myAffirmations;
     ConstraintLayout layout;
-    //String masterKey;
-    //public static Integer myOldKey;
-
-
-    //TextView firstReminderTimeTextView;
-    //StringBuilder
-
-    /*
-    final String KEYAffirmationText = "keyAffirmationText";
-
-    final String KEYRadioOnce = "keyRadioOnce";
-    final String KEYRadioTwice = "keyRadioTwice";
-    final String KEYRadioThrice = "keyRadioThrice";
-
-    final String KEYFirstReminderTime = "keyFirstReminderTime";
-    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +44,11 @@ public class NewCardActivity extends AppCompatActivity {
 
         et1 = (EditText) findViewById(R.id.affirmationEditText);
         radioButtonOnceADay = (RadioButton) findViewById(R.id.radioButton1);
-        //radioButtonOnceADay.setChecked(true);
+
         radioButtonTwiceADay = (RadioButton) findViewById(R.id.radioButton2);
-        //radioButtonTwiceADay.setChecked(false);
+
         radioButtonThriceADay = (RadioButton) findViewById(R.id.radioButton3);
-        //radioButtonThriceADay.setChecked(false);
+
         tvDisplayTime = (TextView) findViewById(R.id.tvTime);
         onceADay = true;
         twiceADay = false;
@@ -125,9 +92,7 @@ public class NewCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-//                Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-//                //setResult(RESULT_OK,myIntent);
-//                startActivity(myIntent);
+
             }
         });
 
@@ -161,10 +126,8 @@ public class NewCardActivity extends AppCompatActivity {
 
 
                     Affirmation newAffirmation = new Affirmation(affirmationText, onceADay, twiceADay, thriceADay, firstReminderTimeString, isEnabled, affirmationKeyString);
-                    //tinydb.putObject("testKeyNewCard", newAffirmation);
 
                     Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                    //getIntent().removeExtra("myEditedAffirmation");
                     myIntent.removeExtra("myEditedAffirmation");
                     myIntent.putExtra("myNewAffirmation", newAffirmation );
                     myIntent.replaceExtras(myIntent.putExtra("myNewAffirmation", newAffirmation ));
@@ -203,7 +166,7 @@ public class NewCardActivity extends AppCompatActivity {
                 onceADay = true;
                 twiceADay = false;
                 thriceADay = false;
-                Toast.makeText(getApplicationContext(), "1 works", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "1 works", Toast.LENGTH_SHORT).show();
                     break;
             case R.id.radioButton2:
                 if(checked)
@@ -211,7 +174,7 @@ public class NewCardActivity extends AppCompatActivity {
                 onceADay = false;
                 twiceADay = true;
                 thriceADay = false;
-                Toast.makeText(getApplicationContext(), "2 works", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "2 works", Toast.LENGTH_SHORT).show();
                     break;
             case R.id.radioButton3:
                 if (checked)
@@ -219,32 +182,11 @@ public class NewCardActivity extends AppCompatActivity {
                 onceADay = false;
                 twiceADay = false;
                 thriceADay = true;
-                Toast.makeText(getApplicationContext(), "3 works", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "3 works", Toast.LENGTH_SHORT).show();
                     break;
 
         }
     }
 
-    private TimePickerDialog.OnTimeSetListener timePickerListener =
-            new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
-                    hour = selectedHour;
-                    minute = selectedMinute;
-
-                    tvDisplayTime.setText(new StringBuilder().append(hour).append(":").append(minute));
-                }
-            };
-
-    private void makeAffirmationsListKey(){
-        listLength = myAffirmations.size();
-        listLengthPlusOne = (listLength +1);
-        affirmationsKey = ("affirmation"+ listLengthPlusOne);
-    }
-
-
-    public static  Integer getListLength() {
-        return  listLength;
-    }
 
 }

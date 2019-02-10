@@ -4,7 +4,6 @@ package com.example.christian.thirditeration_moba_affirmate;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.widget.TextView;
@@ -32,23 +31,6 @@ public class TimePickerFragment extends DialogFragment
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
-
-
-
-/*
-        //Take Hour:Minute from last input value (8:30)
-        TextView tvDisplayTime = (TextView) getActivity().findViewById(R.id.tvTime);
-
-        String tvDisplayTimeString = tvDisplayTime.toString();
-
-        String substr = ":";
-        String before = tvDisplayTimeString.substring(0, tvDisplayTimeString.indexOf(substr));
-        String after = tvDisplayTimeString.substring(tvDisplayTimeString.indexOf(substr) + substr.length());
-
-        int hour = Integer.valueOf(before);
-        int minute = Integer.valueOf(after);
-
-*/
 
         return new TimePickerDialog(getActivity(), this, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
